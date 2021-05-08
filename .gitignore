@@ -57,3 +57,5 @@ out/doc
 
 .bin/postgis-volume
 .bloop/
+
+local-runner/postgres-volume
