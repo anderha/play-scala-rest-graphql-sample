@@ -1,0 +1,14 @@
+version: "3.1"
+
+services:
+  db:
+    container_name: todoRestGraphQlSampleLocalRunnerPostgres
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: test
+      POSTGRES_USER: test
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres-volume/data:/var/lib/postgresql/data
