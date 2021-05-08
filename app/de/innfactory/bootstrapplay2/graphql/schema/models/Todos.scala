@@ -1,8 +1,8 @@
 package de.innfactory.bootstrapplay2.graphql.schema.models
 
-import de.innfactory.bootstrapplay2.models.api.Todo
-import sangria.macros.derive.{ deriveObjectType, ReplaceField }
-import sangria.schema.{ BooleanType, Field, LongType, ObjectType, StringType }
+import de.innfactory.bootstrapplay2.models.api.{ CreateTodo, Todo }
+import sangria.macros.derive.{ deriveInputObjectType, deriveObjectType, InputObjectTypeName, ReplaceField }
+import sangria.schema.{ BooleanType, Field, InputObjectType, LongType, ObjectType, OptionType, StringType }
 
 object Todos {
   val TodoType: ObjectType[Unit, Todo] = deriveObjectType(
@@ -25,11 +25,19 @@ object Todos {
     ),
     ReplaceField(
       fieldName = "doneAt",
-      field = Field(name = "doneAt", fieldType = LongType, resolve = todoContext => todoContext.value.doneAt.get)
+      field =
+        Field(name = "doneAt", fieldType = OptionType(LongType), resolve = todoContext => todoContext.value.doneAt)
     ),
     ReplaceField(
       fieldName = "createdAt",
       field = Field(name = "createdAt", fieldType = LongType, resolve = todoContext => todoContext.value.createdAt)
     )
+  )
+
+  val CreateTodoType: InputObjectType[CreateTodo] = deriveInputObjectType[CreateTodo](
+    InputObjectTypeName("CreateTodoType")
+  )
+  val UpdateTodoType: InputObjectType[Todo]       = deriveInputObjectType[Todo](
+    InputObjectTypeName("UpdateTodoType")
   )
 }

@@ -10,6 +10,7 @@ import de.innfactory.bootstrapplay2.common.results.Results.Result
 import de.innfactory.bootstrapplay2.common.results.Results.ResultStatus
 import de.innfactory.bootstrapplay2.db.TodoDAO
 import de.innfactory.bootstrapplay2.graphql.ErrorParserImpl
+import de.innfactory.grapqhl.play.result.implicits.GraphQlResult.EnhancedFutureResult
 import de.innfactory.play.slick.enhanced.utils.filteroptions.FilterOptions
 
 import scala.concurrent.{ ExecutionContext, Future }
@@ -19,12 +20,20 @@ class TodoRepository @Inject() (todoDAO: TodoDAO)(implicit ec: ExecutionContext,
   /*
    *  GRAPHQL-API
    */
-  def allGraphQL(
-    filter: Seq[FilterOptions[_root_.dbdata.Tables.Todo, _]]
-  )(implicit rc: RequestContext): Future[Seq[Todo]] =
-    Future {
-      Seq()
-    }
+  def allGraphQL()(implicit rc: RequestContext): Future[Seq[Todo]] =
+    all().completeOrThrow
+
+  def lookupGraphQl(id: Long): Future[Todo] =
+    lookup(id).completeOrThrow
+
+  def createTodoGraphQl(todoToCreate: CreateTodo): Future[Todo] =
+    post(todoToCreate).completeOrThrow
+
+  def updateTodoGraphQl(todoToUpdate: Todo): Future[Todo] =
+    patch(todoToUpdate).completeOrThrow
+
+  def deleteGraphQl(id: Long): Future[Todo] =
+    delete(id).completeOrThrow
 
   /*
    *  REST-API
