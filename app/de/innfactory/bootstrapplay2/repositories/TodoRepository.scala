@@ -8,11 +8,13 @@ import de.innfactory.bootstrapplay2.common.logging.ImplicitLogContext
 import de.innfactory.bootstrapplay2.common.request.RequestContext
 import de.innfactory.bootstrapplay2.common.results.Results.Result
 import de.innfactory.bootstrapplay2.common.results.Results.ResultStatus
+import de.innfactory.bootstrapplay2.common.results.errors.Errors.BadRequest
 import de.innfactory.bootstrapplay2.db.TodoDAO
 import de.innfactory.bootstrapplay2.graphql.ErrorParserImpl
 import de.innfactory.grapqhl.play.result.implicits.GraphQlResult.EnhancedFutureResult
 import de.innfactory.play.slick.enhanced.utils.filteroptions.FilterOptions
 
+import scala.Right
 import scala.concurrent.{ ExecutionContext, Future }
 
 class TodoRepository @Inject() (todoDAO: TodoDAO)(implicit ec: ExecutionContext, errorParser: ErrorParserImpl)
@@ -62,7 +64,11 @@ class TodoRepository @Inject() (todoDAO: TodoDAO)(implicit ec: ExecutionContext,
   }
 
   def post(todoToCreate: CreateTodo): Future[Result[Todo]] = {
+    def validateTodoToCreate: Result[CreateTodo] =
+      if (todoToCreate.title.nonEmpty) Right(todoToCreate) else Left(BadRequest())
+
     val result = for {
+      _           <- EitherT(Future(validateTodoToCreate))
       createdTodo <- EitherT(todoDAO.create(todoToCreate))
     } yield createdTodo
     result.value

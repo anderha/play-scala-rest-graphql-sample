@@ -1,3 +1,4 @@
+/*
 INSERT INTO "todo" ("id",
                        "title",
                        "description",
@@ -21,3 +22,4 @@ VALUES (2,
         true,
         1620484439901,
         1620484433901);
+ */

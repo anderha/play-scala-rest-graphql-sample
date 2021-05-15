@@ -8,8 +8,8 @@ import de.innfactory.grapqhl.play.result.implicits.{ ErrorParser, GraphQlExcepti
 
 class ErrorParserImpl extends ErrorParser[ResultStatus] {
   override def internalErrorToUserFacingError(error: ResultStatus): GraphQlException = error match {
-    case _: BadRequest => BadRequestError("BadRequest")
+    case _: BadRequest => BadRequestError("Bad Request")
     case _: Forbidden  => ForbiddenError("Forbidden")
-    case _             => BadRequestError("BadRequest")
+    case _             => BadRequestError("Bad Request")
   }
 }

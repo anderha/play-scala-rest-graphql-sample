@@ -35,9 +35,9 @@ object Todos {
   )
 
   val CreateTodoType: InputObjectType[CreateTodo] = deriveInputObjectType[CreateTodo](
-    InputObjectTypeName("CreateTodoType")
+    InputObjectTypeName("TodoToCreateType")
   )
   val UpdateTodoType: InputObjectType[Todo]       = deriveInputObjectType[Todo](
-    InputObjectTypeName("UpdateTodoType")
+    InputObjectTypeName("TodoToUpdateType")
   )
 }

@@ -4,9 +4,9 @@ import de.innfactory.bootstrapplay2.graphql.schema.models.Todos.{
   CreateTodoType,
   UpdateTodoType => UpdateTodoInputType
 }
+import de.innfactory.bootstrapplay2.models.api.{ CreateTodo, Todo }
 import de.innfactory.grapqhl.sangria.marshalling.playJson.playJsonReaderFromInput
 import sangria.schema.{ Argument, LongType, OptionInputType, StringType }
-import sangria.marshalling.FromInput
 
 object Arguments {
   val TodoFilterArg: Argument[Option[String]] =
@@ -22,8 +22,8 @@ object Arguments {
       LongType
     )
 
-  val CreateTodoArg =
-    Argument("createTodo", CreateTodoType)
+  val CreateTodoArg: Argument[CreateTodo] =
+    Argument("todoToCreate", CreateTodoType)
 
-  val UpdateTodoType = Argument("updateTodo", UpdateTodoInputType)
+  val UpdateTodoType: Argument[Todo] = Argument("todoToUpdate", UpdateTodoInputType)
 }

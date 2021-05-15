@@ -14,7 +14,7 @@ class FunctionalSpec extends PlaySpec with BaseOneAppPerSuite with TestApplicati
     "work with postgres Database" in {
       val future = route(
         app,
-        FakeRequest(GET, "/").withHeaders(("Authorization", "GlobalAdmin"))
+        FakeRequest(GET, "/")
       ).get
       status(future) mustEqual 200
     }

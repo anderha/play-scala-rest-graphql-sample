@@ -10,6 +10,8 @@ import slick.jdbc.JdbcBackend.Database
 import scala.concurrent.{ ExecutionContext, Future }
 import dbdata.Tables
 import de.innfactory.bootstrapplay2.models.api.Todo.patch
+import org.joda.time.DateTime
+
 import javax.inject.Singleton
 
 @ImplementedBy(classOf[TodoDAOImpl])
@@ -66,7 +68,7 @@ class TodoDAOImpl @Inject() (db: Database)(implicit ec: ExecutionContext)
       title = todoObject.title,
       description = todoObject.description,
       isDone = todoObject.isDone,
-      doneAt = todoObject.doneAt,
+      doneAt = if (todoObject.isDone) Some(todoObject.doneAt.getOrElse(new DateTime().getMillis)) else None,
       createdAt = todoObject.createdAt
     )
 
@@ -77,7 +79,7 @@ class TodoDAOImpl @Inject() (db: Database)(implicit ec: ExecutionContext)
       description = todoToCreate.description,
       isDone = false,
       doneAt = None,
-      createdAt = System.currentTimeMillis
+      createdAt = new DateTime().getMillis
     )
 
   implicit private def todoRowToTodoObject(todoRow: Tables.TodoRow): TodoObject =
