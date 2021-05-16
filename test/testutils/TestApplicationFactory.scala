@@ -1,15 +1,12 @@
-package controllers
+package testutils
 
-import java.util.Properties
 import com.google.inject.Inject
-import org.flywaydb.core.Flyway
-import org.flywaydb.core.internal.jdbc.DriverDataSource
+import de.innfactory.play.flyway.test.TestFlywayMigrator
+import org.joda.time.DateTimeUtils
 import org.scalatestplus.play.FakeApplicationFactory
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.{ Binding, Module }
-import play.api.{ Application, Configuration, Environment, Logger }
-import de.innfactory.play.flyway.test.TestFlywayMigrator
-import org.joda.time.DateTimeUtils
+import play.api.{ Application, Configuration, Environment }
 
 /**
  * Set up an application factory that runs flyways migrations.

@@ -23,8 +23,8 @@ goto:eof
 
 :connection_etablished
 echo Running tests
-@sbt ciTests
+sbt test
 echo Shutdown docker container
-@cd .test
-@docker compose down
-@cd ..
+cd .test
+docker compose down
+cd ..

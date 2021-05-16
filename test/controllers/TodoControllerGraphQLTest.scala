@@ -1,12 +1,11 @@
 package controllers
 
-import de.innfactory.bootstrapplay2.models.api.Todo
-import models.graphql.{ GraphQLError, GraphQLErrorResponse }
 import org.scalatestplus.play.{ BaseOneAppPerSuite, PlaySpec }
 import play.api.libs.json.{ JsObject, JsValue, Json }
 import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import testutils.TestApplicationFactory
 
 import scala.concurrent.Future
 
@@ -31,15 +30,21 @@ class TodoControllerGraphQLTest extends PlaySpec with BaseOneAppPerSuite with Te
 
   "Mutation createTodo" should {
     "return a newly created todo" in {
-      val future: Future[Result] = baseFakeRequest(
-        Json.obj(
-          "operationName" -> "CreateTodo",
-          "query"         -> s""" 
-                        |mutation CreateTodo {
-                        | createTodo(todoToCreate: { title: "${titleOfTodo}", description: "${descriptionOfTodo}"}) {
-                        |   ${todoGQLSchema}
-                        | }
-                        |}""".stripMargin
+      val future: Future[Result] = route(
+        app,
+        FakeRequest(POST, "/graphql").withJsonBody(
+          Json.obj(
+            "operationName" -> "CreateTodo",
+            "query"         -> s""" 
+                          |mutation CreateTodo {
+                          | createTodo(todoToCreate: { 
+                          |   title: "${titleOfTodo}", 
+                          |   description: "${descriptionOfTodo}"
+                          |  }) {
+                          |   ${todoGQLSchema}
+                          | }
+                          |}""".stripMargin
+          )
         )
       ).get
 
@@ -54,7 +59,7 @@ class TodoControllerGraphQLTest extends PlaySpec with BaseOneAppPerSuite with Te
         "data" -> Json.obj(
           "createTodo" -> Json.parse(s"""
                                         |{
-                                        |   "id": 1,
+                                        |   "id": 2,
                                         |   "title": "${titleOfTodo}",
                                         |   "description": "${descriptionOfTodo}",
                                         |   "isDone": false,
@@ -66,7 +71,7 @@ class TodoControllerGraphQLTest extends PlaySpec with BaseOneAppPerSuite with Te
       )
     }
 
-    "return http status code 400 on malformed request" in {
+    "return http status code 400 on malformed body" in {
       val future: Future[Result] = baseFakeRequest(
         Json.obj(
           "operationName" -> "CreateTodo",
@@ -103,7 +108,6 @@ class TodoControllerGraphQLTest extends PlaySpec with BaseOneAppPerSuite with Te
       contentType(future) mustBe Some("application/json")
 
       val content = contentAsJson(future)
-      println(content)
       // Check returned content is not of format todo
       content mustEqual Json.obj(
         "data"   -> null,
@@ -150,6 +154,18 @@ class TodoControllerGraphQLTest extends PlaySpec with BaseOneAppPerSuite with Te
               s"""
                  |{
                  |   "id": 1,
+                 |   "title": "Testtodo 1",
+                 |   "description": "Dies ist ein Test",
+                 |   "isDone": false,
+                 |   "doneAt": null,
+                 |   "createdAt": 1621082427626
+                 | }
+                 |""".stripMargin
+            ),
+            Json.parse(
+              s"""
+                 |{
+                 |   "id": 2,
                  |   "title": "${titleOfTodo}",
                  |   "description": "${descriptionOfTodo}",
                  |   "isDone": false,

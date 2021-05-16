@@ -6,6 +6,7 @@ import play.api.libs.json._
 import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import testutils.TestApplicationFactory
 
 import scala.concurrent.Future
 
@@ -18,7 +19,7 @@ class TodoControllerRESTTest extends PlaySpec with BaseOneAppPerSuite with TestA
       val descriptionOfTodo      = "This is a REST test!"
       val future: Future[Result] = route(
         app,
-        FakeRequest(POST, todoRoute).withJsonBody(
+        FakeRequest(POST, "/v1/todo").withJsonBody(
           Json.parse(
             s"""{
                |  "title": "${titleOfTodo}",
@@ -44,10 +45,26 @@ class TodoControllerRESTTest extends PlaySpec with BaseOneAppPerSuite with TestA
       parsed.doneAt mustBe None
     }
 
-    "return http status code 400 on empty body" in {
+    "return http status code 400 on malformed body" in {
       val future: Future[Result] = route(
         app,
         FakeRequest(POST, todoRoute).withJsonBody(Json.parse("{}"))
+      ).get
+      // Check Http Status
+      status(future) mustBe 400
+    }
+
+    "return http status code 400 on empty title" in {
+      val future: Future[Result] = route(
+        app,
+        FakeRequest(POST, todoRoute).withJsonBody(
+          Json.parse(
+            s"""{
+               |  "title": "",
+               |  "description": "" 
+               |}""".stripMargin
+          )
+        )
       ).get
       // Check Http Status
       status(future) mustBe 400

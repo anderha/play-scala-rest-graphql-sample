@@ -4,6 +4,7 @@ import org.scalatestplus.play.{ BaseOneAppPerSuite, PlaySpec }
 import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import testutils.TestApplicationFactory
 
 import scala.concurrent.Future
 
