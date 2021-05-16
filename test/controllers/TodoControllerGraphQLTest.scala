@@ -5,16 +5,14 @@ import play.api.libs.json.{ JsObject, JsValue, Json }
 import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import testutils.Defaults.{ graphQlEndpoint, millis }
 import testutils.TestApplicationFactory
 
 import scala.concurrent.Future
 
 class TodoControllerGraphQLTest extends PlaySpec with BaseOneAppPerSuite with TestApplicationFactory {
-  val graphQlEndpoint = "/graphql"
-  val millis          = 1621082427626L
-
-  val titleOfTodo       = "GraphQL Testtodo"
-  val descriptionOfTodo = "This is a GraphQL test!"
+  private val titleOfTodo       = "GraphQL Testtodo"
+  private val descriptionOfTodo = "This is a GraphQL test!"
 
   private def baseFakeRequest(jsonBody: JsValue): Option[Future[Result]] =
     route(app, FakeRequest(POST, graphQlEndpoint).withJsonBody(jsonBody))
@@ -30,7 +28,7 @@ class TodoControllerGraphQLTest extends PlaySpec with BaseOneAppPerSuite with Te
 
   "Mutation createTodo" should {
     "return a newly created todo" in {
-      val future: Future[Result] = route(
+      val futureResult: Future[Result] = route(
         app,
         FakeRequest(POST, "/graphql").withJsonBody(
           Json.obj(
@@ -49,30 +47,29 @@ class TodoControllerGraphQLTest extends PlaySpec with BaseOneAppPerSuite with Te
       ).get
 
       // Check Http Status
-      status(future) mustBe 200
-      // Check content type
-      contentType(future) mustBe Some("application/json")
+      status(futureResult) mustBe 200
 
-      val content = contentAsJson(future)
-      // Check returned content is of format todo
+      // Check content type
+      contentType(futureResult) mustBe Some("application/json")
+
+      val content = contentAsJson(futureResult)
+      // Check returned content contains created todo
       content mustEqual Json.obj(
         "data" -> Json.obj(
-          "createTodo" -> Json.parse(s"""
-                                        |{
-                                        |   "id": 2,
-                                        |   "title": "${titleOfTodo}",
-                                        |   "description": "${descriptionOfTodo}",
-                                        |   "isDone": false,
-                                        |   "doneAt": null,
-                                        |   "createdAt": 1621082427626
-                                        | }
-                                        |""".stripMargin)
+          "createTodo" -> Json.obj(
+            "id"          -> 2,
+            "title"       -> s"$titleOfTodo",
+            "description" -> s"$descriptionOfTodo",
+            "isDone"      -> false,
+            "doneAt"      -> null,
+            "createdAt"   -> millis
+          )
         )
       )
     }
 
     "return http status code 400 on malformed body" in {
-      val future: Future[Result] = baseFakeRequest(
+      val futureResult: Future[Result] = baseFakeRequest(
         Json.obj(
           "operationName" -> "CreateTodo",
           "query"         -> s""" 
@@ -85,16 +82,16 @@ class TodoControllerGraphQLTest extends PlaySpec with BaseOneAppPerSuite with Te
       ).get
 
       // Check Http Status
-      status(future) mustBe 400
+      status(futureResult) mustBe 400
     }
 
     "return error message 400 on empty title" in {
-      val future: Future[Result] = baseFakeRequest(
+      val futureResult: Future[Result] = baseFakeRequest(
         Json.obj(
           "operationName" -> "CreateTodo",
           "query"         -> s""" 
                         |mutation CreateTodo {
-                        | createTodo(todoToCreate: { title: "", description: ""}) {
+                        | createTodo(todoToCreate: { title: "", description: "$descriptionOfTodo"}) {
                         |   ${todoGQLSchema}
                         | }
                         |}""".stripMargin
@@ -102,13 +99,13 @@ class TodoControllerGraphQLTest extends PlaySpec with BaseOneAppPerSuite with Te
       ).get
 
       // Check Http Status
-      status(future) mustBe 200
+      status(futureResult) mustBe 200
 
       // Check content type
-      contentType(future) mustBe Some("application/json")
+      contentType(futureResult) mustBe Some("application/json")
 
-      val content = contentAsJson(future)
-      // Check returned content is not of format todo
+      val content = contentAsJson(futureResult)
+      // Check returned content contains error
       content mustEqual Json.obj(
         "data"   -> null,
         "errors" -> Json.arr(
@@ -130,7 +127,7 @@ class TodoControllerGraphQLTest extends PlaySpec with BaseOneAppPerSuite with Te
 
   "Query allTodos" should {
     "return a list of todos" in {
-      val future: Future[Result] = baseFakeRequest(
+      val futureResult: Future[Result] = baseFakeRequest(
         Json.obj(
           "operationName" -> "AllTodos",
           "query"         -> s"""query AllTodos {
@@ -141,11 +138,11 @@ class TodoControllerGraphQLTest extends PlaySpec with BaseOneAppPerSuite with Te
         )
       ).get
       // Check Http Status
-      status(future) mustBe 200
+      status(futureResult) mustBe 200
       // Check content type
-      contentType(future) mustBe Some("application/json")
+      contentType(futureResult) mustBe Some("application/json")
 
-      val content = contentAsJson(future)
+      val content = contentAsJson(futureResult)
       // Check returned content has format of todo
       content mustEqual Json.obj(
         "data" -> Json.obj(
@@ -158,7 +155,7 @@ class TodoControllerGraphQLTest extends PlaySpec with BaseOneAppPerSuite with Te
                  |   "description": "Dies ist ein Test",
                  |   "isDone": false,
                  |   "doneAt": null,
-                 |   "createdAt": 1621082427626
+                 |   "createdAt": $millis
                  | }
                  |""".stripMargin
             ),
@@ -170,7 +167,7 @@ class TodoControllerGraphQLTest extends PlaySpec with BaseOneAppPerSuite with Te
                  |   "description": "${descriptionOfTodo}",
                  |   "isDone": false,
                  |   "doneAt": null,
-                 |   "createdAt": 1621082427626
+                 |   "createdAt": $millis
                  | }
                  |""".stripMargin
             )
