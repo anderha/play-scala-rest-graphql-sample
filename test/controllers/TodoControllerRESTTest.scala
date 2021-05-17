@@ -15,7 +15,7 @@ class TodoControllerRESTTest extends PlaySpec with BaseOneAppPerSuite with TestA
   private val titleOfTodo       = "REST Testtodo"
   private val descriptionOfTodo = "This is a REST test!"
 
-  "POST on TodoController(REST)" should {
+  "POST on route of todo" must {
     "return a newly created todo" in {
       val futureResult: Future[Result] = route(
         app,
@@ -74,7 +74,7 @@ class TodoControllerRESTTest extends PlaySpec with BaseOneAppPerSuite with TestA
     }
   }
 
-  "GET on TodoController(REST)" should {
+  "GET on TodoController(REST)" must {
     "return a list of todos" in {
       val futureResult: Future[Result] = route(
         app,

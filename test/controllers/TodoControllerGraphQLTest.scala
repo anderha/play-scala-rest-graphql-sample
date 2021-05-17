@@ -26,7 +26,7 @@ class TodoControllerGraphQLTest extends PlaySpec with BaseOneAppPerSuite with Te
                                  | createdAt
                                  |""".stripMargin
 
-  "Mutation createTodo" should {
+  "Mutation createTodo" must {
     "return a newly created todo" in {
       val futureResult: Future[Result] = route(
         app,
@@ -125,7 +125,7 @@ class TodoControllerGraphQLTest extends PlaySpec with BaseOneAppPerSuite with Te
     }
   }
 
-  "Query allTodos" should {
+  "Query allTodos" must {
     "return a list of todos" in {
       val futureResult: Future[Result] = baseFakeRequest(
         Json.obj(
