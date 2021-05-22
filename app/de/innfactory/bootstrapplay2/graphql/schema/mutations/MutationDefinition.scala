@@ -11,7 +11,7 @@ import sangria.schema.{ fields, ObjectType }
 object MutationDefinition {
 
   val Mutation: ObjectType[GraphQLExecutionContext, Unit] = ObjectType(
-    name = "mutation",
+    name = "Mutation",
     description = "API Mutations",
     fields = fields(
       createTodoMutation,

@@ -5,7 +5,7 @@ import de.innfactory.grapqhl.sangria.resolvers.generic.CustomRootResolver
 import de.innfactory.bootstrapplay2.graphql.schema.mutations.MutationDefinition.Mutation
 import de.innfactory.bootstrapplay2.graphql.schema.queries.QueryDefinition.Query
 import sangria.execution.deferred.DeferredResolver
-import sangria.schema.Schema
+import sangria.schema.{ Schema }
 
 /**
  * Defines a GraphQL schema for the current project
