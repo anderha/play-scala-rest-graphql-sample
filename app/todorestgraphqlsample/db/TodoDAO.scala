@@ -29,7 +29,7 @@ trait TodoDAO {
 
 @Singleton
 class TodoDAOImpl @Inject() (db: Database)(implicit ec: ExecutionContext)
-    extends BaseSlickDAONoTracing(db)
+    extends BaseSlickDAO(db)
     with TodoDAO
     with ImplicitLogContext {
   override val profile: XPostgresProfile.type = XPostgresProfile
