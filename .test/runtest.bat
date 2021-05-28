@@ -1,9 +1,7 @@
 @echo off
 
 echo Start docker container with postgres db
-cd .test
-docker compose up -d
-cd ..
+docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=test -e POSTGRES_DB=test -e POSTGRES_USER=test --name testContainer postgis/postgis:12-master
 
 echo Wait until container is started
 set /A counter=0
@@ -11,7 +9,7 @@ set /A counter=0
 IF %counter% gtr 9 (
   goto failed
 ) ELSE (
-  ncat -z localhost 5432 && echo Success: connection established && goto connection_etablished
+  ncat -z localhost 5432 && echo Success: connection established && goto connection_established
   timeout /t 1 /nobreak
   set /A counter=%counter% + 1
   goto loop
@@ -21,10 +19,9 @@ IF %counter% gtr 9 (
 echo Failed establishing connection && exit 1
 goto:eof
 
-:connection_etablished
+:connection_established
 echo Running tests
 sbt test
 echo Shutdown docker container
-cd .test
-docker compose down
-cd ..
+docker stop testContainer
+docker rm testContainer

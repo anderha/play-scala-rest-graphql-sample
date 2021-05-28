@@ -8,6 +8,7 @@ import play.api.libs.json.JsValue
 
 import javax.inject.{ Inject, Singleton }
 import play.api.mvc._
+import sangria.renderer.{ SchemaFilter, SchemaRenderer }
 
 import scala.concurrent.{ ExecutionContext, Future }
 
@@ -36,7 +37,10 @@ class GraphQLController @Inject() (
 
   def renderSchema: Action[AnyContent] =
     Action.async { request =>
-      val renderedSchema = executionHelper.renderSchema(SchemaDefinition.graphQLSchema)
+      val renderedSchema = SchemaRenderer.renderSchema(
+        SchemaDefinition.graphQLSchema,
+        SchemaFilter.withoutGraphQLBuiltIn
+      )
       Future(Ok(renderedSchema))
     }
 }

@@ -12,13 +12,6 @@ import sangria.schema.{ Schema }
  */
 object SchemaDefinition {
 
-  // Resolvers (CustomRootResolver with DeferredResolver) and Fetchers
-  val resolvers: DeferredResolver[GraphQLExecutionContext] = DeferredResolver.fetchersWithFallback(
-    new CustomRootResolver(
-      Map()
-    )
-  )
-
   val graphQLSchema: Schema[GraphQLExecutionContext, Unit] =
     Schema(
       Query,
