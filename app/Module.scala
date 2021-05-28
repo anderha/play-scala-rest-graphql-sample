@@ -87,7 +87,7 @@ class LoggingTracingCreator @Inject() (lifecycle: ApplicationLifecycle) {
 class JaegerTracingCreator @Inject() (lifecycle: ApplicationLifecycle) {
   val jaegerExporterConfiguration: JaegerExporterConfiguration = JaegerExporterConfiguration
     .builder()
-    .setServiceName("bootstrap-play2")
+    .setServiceName("todo-rest-graphql-sample")
     .setThriftEndpoint("http://127.0.0.1:14268/api/traces")
     .build()
   JaegerTraceExporter.createAndRegister(jaegerExporterConfiguration)
@@ -120,11 +120,11 @@ class StackdriverTracingCreator @Inject() (lifecycle: ApplicationLifecycle, conf
 
 /** Migrate Flyway on application start */
 class FlywayMigratorImpl @Inject() (env: Environment, configuration: Configuration)
-    extends FlywayMigrator(configuration, env, configIdentifier = "bootstrap-play2")
+    extends FlywayMigrator(configuration, env, configIdentifier = "todo-rest-graphql-sample")
 
 @Singleton
 class DatabaseProvider @Inject() (config: Config) extends Provider[Database] {
-  lazy val get = Database.forConfig("bootstrap-play2.database", config)
+  lazy val get = Database.forConfig("todo-rest-graphql-sample.database", config)
 }
 
 /** Closes DAO. Important on dev restart. */

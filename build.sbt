@@ -1,9 +1,9 @@
 import com.typesafe.config.ConfigFactory
 import com.typesafe.sbt.packager.docker.DockerPlugin.autoImport.dockerEntrypoint
-import sbt.{Def, Resolver, _}
+import sbt.{ Def, Resolver, _ }
 //settings
 
-name := """bootstrap-play2"""
+name := """todo-rest-graphql-sample"""
 scalaVersion := Dependencies.scalaVersion
 
 resolvers += Resolver.githubPackages("innFactory")
@@ -11,15 +11,17 @@ resolvers += Resolver.githubPackages("innFactory")
 val token = sys.env.getOrElse("GITHUB_TOKEN", "")
 
 val githubSettings = Seq(
-   githubOwner := "innFactory",
-    githubRepository := "bootstrap-play2",
+  githubOwner := "innFactory",
+  githubRepository := "bootstrap-play2",
   credentials :=
-    Seq(Credentials(
-      "GitHub Package Registry",
-      "maven.pkg.github.com",
-      "innFactory",
-      token
-    ))
+    Seq(
+      Credentials(
+        "GitHub Package Registry",
+        "maven.pkg.github.com",
+        "innFactory",
+        token
+      )
+    )
 )
 
 val latest = sys.env.get("BRANCH") match {
@@ -38,14 +40,14 @@ val dockerRegistry = sys.env.get("DOCKER_REGISTRY") match {
 }
 
 val generatedFilePath: String = "/dbdata/Tables.scala"
-val flywayDbName: String      = "bootstrap-play2"
+val flywayDbName: String      = "todo-rest-graphql-sample"
 val dbConf                    = settingKey[DbConf]("Typesafe config file with slick settings")
 val generateTables            = taskKey[Seq[File]]("Generate slick code")
 
 // Testing
 
 coverageExcludedPackages += "<empty>;Reverse.*;router.*;.*AuthService.*;models\\\\.data\\\\..*;dbdata.Tables*;de.innfactory.bootstrapplay2.common.jwt.*;de.innfactory.bootstrapplay2.common.errorHandling.*;de.innfactory.bootstrapplay2.common.jwt.JwtFilter;db.codegen.*;de.innfactory.bootstrapplay2.common.pubSub.*;publicmetrics.influx.*"
-Test / fork  := true
+Test / fork := true
 
 // Commands
 
@@ -123,8 +125,8 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(ehcache),
     dependencyOverrides += Dependencies.sl4j, // Override to avoid problems with HikariCP 4.x
     swaggerDomainNameSpaces := Seq(
-      "models",
-    ), // New Models have to be added here to be referencable in routes
+      "models"
+    ),                                        // New Models have to be added here to be referencable in routes
     swaggerPrettyJson := true,
     swaggerV3 := true,
     githubSettings
@@ -166,6 +168,6 @@ ThisBuild / scalafmtOnCompile := true // all projects
 
 /* Change compiling */
 Compile / sourceGenerators += Def.taskDyn(generateTablesTask((Global / dbConf).value)).taskValue
-Compile /compile  := {
+Compile / compile := {
   (Compile / compile).value
 }

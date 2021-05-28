@@ -10,8 +10,8 @@ theme:
     scheme: default
     primary: red
     accent: red
-repo_name: bootstrap-play2
-repo_url: https://github.com/innFactory/bootstrap-play2
+repo_name: todo-rest-graphql-sample
+repo_url: http://localhost:9000/todo-rest-graphql-sample
 plugins:
   - search
   - awesome-pages
