@@ -11,8 +11,8 @@ import com.google.inject.AbstractModule
 import de.innfactory.auth.firebase.FirebaseBase
 import de.innfactory.auth.firebase.FirebaseBase.getClass
 import de.innfactory.auth.firebase.validator.{ JWTValidatorMock, JwtValidator, JwtValidatorImpl }
-import de.innfactory.bootstrapplay2.db.TodoDAO
 import de.innfactory.play.flyway.FlywayMigrator
+import de.innfactory.todorestgraphqlsample.db.TodoDAO
 import io.opencensus.exporter.trace.jaeger.{ JaegerExporterConfiguration, JaegerTraceExporter }
 import io.opencensus.exporter.trace.logging.LoggingTraceExporter
 import io.opencensus.exporter.trace.stackdriver.{ StackdriverTraceConfiguration, StackdriverTraceExporter }

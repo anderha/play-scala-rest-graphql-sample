@@ -7,16 +7,16 @@ Official Play Documentation: [Play Filters Documentation 2.8](https://www.playfr
 
 Filters are defined in [application.conf](../conf/application.conf):
 
-        play.de.innfactory.bootstrapplay2.filters.enabled = [
-          "de.innfactory.bootstrapplay2.filters.logging.AccessLoggingFilter",
-          "de.innfactory.bootstrapplay2.filters.access.RouteBlacklistFilter",
-          "play.de.innfactory.bootstrapplay2.filters.cors.CORSFilter"
+        play.de.innfactory.todorestgraphqlsample.filters.enabled = [
+          "de.innfactory.todorestgraphqlsample.filters.logging.AccessLoggingFilter",
+          "de.innfactory.todorestgraphqlsample.filters.access.RouteBlacklistFilter",
+          "play.de.innfactory.todorestgraphqlsample.filters.cors.CORSFilter"
          ]
 
 ## Filters:  
 
 ### AccessLoggingFilter
-[Go To File](../app/de/innfactory/bootstrapplay2/filters/logging/AccessLoggingFilter.scala)
+[Go To File](../app/de/innfactory/todorestgraphqlsample/filters/logging/AccessLoggingFilter.scala)
 
 - Logs all requests where the statusCode is contained in [application.conf](../conf/application.conf):
 
@@ -25,7 +25,7 @@ Filters are defined in [application.conf](../conf/application.conf):
 
 ### RouteBlacklistFilter 
 
-[Go To File](../app/de/innfactory/bootstrapplay2/filters/access/RouteBlacklistFilter.scala)
+[Go To File](../app/de/innfactory/todorestgraphqlsample/filters/access/RouteBlacklistFilter.scala)
 
 - Blocks all requests defined in RouteBlacklistFilter.scala
 

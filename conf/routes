@@ -23,7 +23,7 @@
 #     '500':
 #       description: InternalServerError
 ###
-GET                 /v1/public/helloworld/:query                       de.innfactory.bootstrapplay2.actorsystem.controllers.ActorHelloWorldController.helloWorldActor(query: String)
+GET                 /v1/public/helloworld/:query                       de.innfactory.todorestgraphqlsample.actorsystem.controllers.ActorHelloWorldController.helloWorldActor(query: String)
 
 # - - - - - - - - WEBSOCKET - - - - - - - -
 
@@ -35,7 +35,7 @@ GET                 /v1/public/helloworld/:query                       de.innfac
 #     '200':
 #       description: Response
 ###
-GET                 /v1/websocket                                   de.innfactory.bootstrapplay2.websockets.controllers.WebsocketController.socket
+GET                 /v1/websocket                                   de.innfactory.todorestgraphqlsample.websockets.controllers.WebsocketController.socket
 
 # - - - - - - - - PROBES - - - - - - - -
 
@@ -47,7 +47,7 @@ GET                 /v1/websocket                                   de.innfactor
 #     '200':
 #       description: OK
 ###
-GET                /                                                de.innfactory.bootstrapplay2.controllers.HealthController.ping
+GET                /                                                de.innfactory.todorestgraphqlsample.controllers.HealthController.ping
 
 ###
 #  summary: Liveness check
@@ -57,7 +57,7 @@ GET                /                                                de.innfactor
 #     '200':
 #       description: OK
 ###
-GET                /liveness                                        de.innfactory.bootstrapplay2.controllers.HealthController.ping
+GET                /liveness                                        de.innfactory.todorestgraphqlsample.controllers.HealthController.ping
 
 ###
 #  summary: Readiness check
@@ -67,16 +67,16 @@ GET                /liveness                                        de.innfactor
 #     '200':
 #       description: OK
 ###
-GET                /readiness                                       de.innfactory.bootstrapplay2.controllers.HealthController.ping
+GET                /readiness                                       de.innfactory.todorestgraphqlsample.controllers.HealthController.ping
 
-GET     /v1/todo                      de.innfactory.bootstrapplay2.controllers.TodoController.getAll
-GET     /v1/todo/:id                  de.innfactory.bootstrapplay2.controllers.TodoController.getById(id: Int)
-POST    /v1/todo                       de.innfactory.bootstrapplay2.controllers.TodoController.post
-PATCH   /v1/todo                      de.innfactory.bootstrapplay2.controllers.TodoController.patch
-DELETE  /v1/todo/:id                       de.innfactory.bootstrapplay2.controllers.TodoController.delete(id: Int)
+GET     /v1/todo                      de.innfactory.todorestgraphqlsample.controllers.TodoController.getAll
+GET     /v1/todo/:id                  de.innfactory.todorestgraphqlsample.controllers.TodoController.getById(id: Int)
+POST    /v1/todo                       de.innfactory.todorestgraphqlsample.controllers.TodoController.post
+PATCH   /v1/todo                      de.innfactory.todorestgraphqlsample.controllers.TodoController.patch
+DELETE  /v1/todo/:id                       de.innfactory.todorestgraphqlsample.controllers.TodoController.delete(id: Int)
 
-POST               /graphql                              de.innfactory.bootstrapplay2.graphql.GraphQLController.graphql
-POST               /graphql/schema                              de.innfactory.bootstrapplay2.graphql.GraphQLController.renderSchema
+POST               /graphql                              de.innfactory.todorestgraphqlsample.graphql.GraphQLController.graphql
+POST               /graphql/schema                              de.innfactory.todorestgraphqlsample.graphql.GraphQLController.renderSchema
 
 # Map static resources from the /public folder to the /assets URL path
 ### NoDocs ###

@@ -11,7 +11,7 @@
 
 ##### Submodules:
 
-  - Main Application Service (de.innfactory.bootstrapplay2.common, controllers, models, Module.scala)
+  - Main Application Service (de.innfactory.todorestgraphqlsample.common, controllers, models, Module.scala)
   
     - Data Controllers with Database Connection
     - DAOs

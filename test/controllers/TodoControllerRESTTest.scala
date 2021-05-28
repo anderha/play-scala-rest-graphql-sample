@@ -1,6 +1,6 @@
 package controllers
 
-import de.innfactory.bootstrapplay2.models.api.Todo
+import de.innfactory.todorestgraphqlsample.models.api.Todo
 import org.scalatestplus.play.{ BaseOneAppPerSuite, PlaySpec }
 import play.api.libs.json._
 import play.api.mvc.Result
