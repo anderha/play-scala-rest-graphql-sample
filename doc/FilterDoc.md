@@ -7,10 +7,10 @@ Official Play Documentation: [Play Filters Documentation 2.8](https://www.playfr
 
 Filters are defined in [application.conf](../conf/application.conf):
 
-        play.de.innfactory.todorestgraphqlsample.filters.enabled = [
-          "de.innfactory.todorestgraphqlsample.filters.logging.AccessLoggingFilter",
-          "de.innfactory.todorestgraphqlsample.filters.access.RouteBlacklistFilter",
-          "play.de.innfactory.todorestgraphqlsample.filters.cors.CORSFilter"
+        play.todorestgraphqlsample.filters.enabled = [
+          "todorestgraphqlsample.filters.logging.AccessLoggingFilter",
+          "todorestgraphqlsample.filters.access.RouteBlacklistFilter",
+          "play.todorestgraphqlsample.filters.cors.CORSFilter"
          ]
 
 ## Filters:  

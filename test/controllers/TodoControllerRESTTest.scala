@@ -1,6 +1,5 @@
 package controllers
 
-import de.innfactory.todorestgraphqlsample.models.api.Todo
 import org.scalatestplus.play.{ BaseOneAppPerSuite, PlaySpec }
 import play.api.libs.json._
 import play.api.mvc.Result
@@ -8,6 +7,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import testutils.Defaults.{ millis, todoRoute }
 import testutils.TestApplicationFactory
+import todorestgraphqlsample.models.api.Todo
 
 import scala.concurrent.Future
 

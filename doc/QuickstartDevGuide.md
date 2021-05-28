@@ -26,7 +26,7 @@
     bind(classOf[MyNewDAOCloseHook]).asEagerSingleton()
    ```
 
-6. Create a new [Repository](./RepositoryDoc.md) __./app/de.innfactory.todorestgraphqlsample.repositories/*__ for data aggregation and handling. 
+6. Create a new [Repository](./RepositoryDoc.md) __./app/todorestgraphqlsample.repositories/*__ for data aggregation and handling. 
 
 7. A new [Controller](./ControllerDoc.md) has to be created in __./app/controllers/*__.
 
@@ -56,7 +56,7 @@
           '200':
           description: success
            schema:
-             $ref: '#/components/schemas/de.innfactory.todorestgraphqlsample.models.api.Company'
+             $ref: '#/components/schemas/todorestgraphqlsample.models.api.Company'
     ```
 10. To create Tests add a new ControllerTest to __./test/controllers/*__. Test Data can be added to the Database by editing the [V999__DATA.sql](../test/resources/migration/V999__DATA.sql) in __./test/resources/migration/*__. Flyway will then automatically migrate the data into the database before each Controller Test. So each controller starts with a freshly cleaned an migrated Database.
 
