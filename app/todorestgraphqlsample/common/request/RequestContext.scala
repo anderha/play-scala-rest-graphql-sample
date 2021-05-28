@@ -5,28 +5,18 @@ import io.opencensus.trace.Span
 import play.api.mvc.{ AnyContent, Request }
 import todorestgraphqlsample.common.request.logger.TraceLogger
 
-class TraceContext(traceSpan: Span) {
-  def span: Span = traceSpan
-
-  private val traceLogger = new TraceLogger(span)
-
-  final def log: TraceLogger = traceLogger
-}
-
 trait BaseRequestContext {
 
   def request: Request[AnyContent]
 
 }
 
-class RequestContext(rcSpan: Span, rcRequest: Request[AnyContent])
-    extends TraceContext(rcSpan)
-    with BaseRequestContext {
+class RequestContext(rcRequest: Request[AnyContent]) extends BaseRequestContext {
   override def request: Request[AnyContent] = rcRequest
 }
 
 object ReqConverterHelper {
 
   def requestContext[R[A] <: TraceRequest[AnyContent]](implicit req: R[_]): RequestContext =
-    new RequestContext(req.traceSpan, req.request)
+    new RequestContext(req.request)
 }

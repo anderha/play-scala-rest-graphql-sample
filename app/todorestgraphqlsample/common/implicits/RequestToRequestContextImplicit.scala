@@ -29,7 +29,7 @@ object RequestToRequestContextImplicit {
       )
 
       traceWithParent(spanString, span) { spanChild =>
-        val rc     = new RequestContext(spanChild, request)
+        val rc     = new RequestContext(request)
         val result = f(rc)
         result.map { r =>
           spanChild.end()
