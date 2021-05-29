@@ -2,15 +2,11 @@ package todorestgraphqlsample.repositories
 
 import cats.data.EitherT
 import cats.implicits.catsSyntaxEitherId
-import com.google.inject.{ ImplementedBy, Inject }
+import com.google.inject.{ Inject }
 import todorestgraphqlsample.common.results.Results.Result
 import todorestgraphqlsample.common.results.Results.ResultStatus
 import todorestgraphqlsample.common.results.errors.Errors.BadRequest
 import de.innfactory.grapqhl.play.result.implicits.GraphQlResult.EnhancedFutureResult
-import de.innfactory.play.slick.enhanced.utils.filteroptions.FilterOptions
-import todorestgraphqlsample.models.api.{ CreateTodo, Todo }
-import todorestgraphqlsample.common.logging.ImplicitLogContext
-import todorestgraphqlsample.common.request.RequestContext
 import todorestgraphqlsample.db.TodoDAO
 import todorestgraphqlsample.graphql.ErrorParserImpl
 import todorestgraphqlsample.models.api.{ CreateTodo, Todo }
@@ -18,12 +14,11 @@ import todorestgraphqlsample.models.api.{ CreateTodo, Todo }
 import scala.Right
 import scala.concurrent.{ ExecutionContext, Future }
 
-class TodoRepository @Inject() (todoDAO: TodoDAO)(implicit ec: ExecutionContext, errorParser: ErrorParserImpl)
-    extends ImplicitLogContext {
+class TodoRepository @Inject() (todoDAO: TodoDAO)(implicit ec: ExecutionContext, errorParser: ErrorParserImpl) {
   /*
    *  GRAPHQL-API
    */
-  def allGraphQL()(implicit rc: RequestContext): Future[Seq[Todo]] =
+  def allGraphQL(): Future[Seq[Todo]] =
     all().completeOrThrow
 
   def lookupGraphQl(id: Long): Future[Todo] =

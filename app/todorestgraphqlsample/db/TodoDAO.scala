@@ -11,7 +11,6 @@ import todorestgraphqlsample.models.api.Todo.patch
 import todorestgraphqlsample.models.api
 import todorestgraphqlsample.models.api.{ CreateTodo, Todo }
 import org.joda.time.DateTime
-import todorestgraphqlsample.common.logging.ImplicitLogContext
 import todorestgraphqlsample.models.api
 import todorestgraphqlsample.models.api.{ CreateTodo, Todo }
 
@@ -28,10 +27,7 @@ trait TodoDAO {
 }
 
 @Singleton
-class TodoDAOImpl @Inject() (db: Database)(implicit ec: ExecutionContext)
-    extends BaseSlickDAO(db)
-    with TodoDAO
-    with ImplicitLogContext {
+class TodoDAOImpl @Inject() (db: Database)(implicit ec: ExecutionContext) extends BaseSlickDAO(db) with TodoDAO {
   override val profile: XPostgresProfile.type = XPostgresProfile
   import profile.api._
 

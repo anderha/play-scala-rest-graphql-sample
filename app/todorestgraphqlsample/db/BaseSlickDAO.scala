@@ -8,12 +8,11 @@ import todorestgraphqlsample.common.results.Results.{ Result, ResultStatus }
 import todorestgraphqlsample.common.results.errors.Errors.{ BadRequest, DatabaseResult, NotFound }
 import slick.dbio.{ DBIOAction, Effect, NoStream }
 import slick.jdbc.JdbcBackend.Database
-import todorestgraphqlsample.common.logging.ImplicitLogContext
 import todorestgraphqlsample.common.results.Results.ResultStatus
 
 import scala.concurrent.{ ExecutionContext, Future }
 
-case class BaseSlickDAO(db: Database)(implicit ec: ExecutionContext) extends Tables with ImplicitLogContext {
+case class BaseSlickDAO(db: Database)(implicit ec: ExecutionContext) extends Tables {
   override val profile = XPostgresProfile
 
   def lookupGeneric[R, T](

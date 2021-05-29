@@ -3,7 +3,6 @@ package todorestgraphqlsample.common.request
 import de.innfactory.play.tracing.TraceRequest
 import io.opencensus.trace.Span
 import play.api.mvc.{ AnyContent, Request }
-import todorestgraphqlsample.common.request.logger.TraceLogger
 
 trait BaseRequestContext {
 
