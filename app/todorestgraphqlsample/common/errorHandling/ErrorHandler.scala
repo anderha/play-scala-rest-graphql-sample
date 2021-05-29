@@ -17,7 +17,7 @@ class ErrorHandler extends HttpErrorHandler {
    * @param message
    * @return
    */
-  def onClientError(request: RequestHeader, statusCode: Int, message: String) =
+  def onClientError(request: RequestHeader, statusCode: Int, message: String): Future[Result] =
     Future.successful(
       Status(statusCode)("A client error occurred")
     )
@@ -28,7 +28,7 @@ class ErrorHandler extends HttpErrorHandler {
    * @param exception
    * @return
    */
-  def onServerError(request: RequestHeader, exception: Throwable) = {
+  def onServerError(request: RequestHeader, exception: Throwable): Future[Result] = {
     val log = Logger("play")
     log.error(request.toString(), exception)
     Future.successful(

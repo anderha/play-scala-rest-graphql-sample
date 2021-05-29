@@ -1,8 +1,8 @@
-package todorestgraphqlsample.common.validators
+package todorestgraphqlsample.common.utils
 
+import play.api.libs.json.{ JsError, JsSuccess, JsValue, Reads }
 import todorestgraphqlsample.common.results.Results.Result
 import todorestgraphqlsample.common.results.errors.Errors.BadRequest
-import play.api.libs.json.{ JsError, JsSuccess, JsValue, Reads }
 
 object JsonValidator {
   implicit class JsValueJsonValidator(jsValue: JsValue) {

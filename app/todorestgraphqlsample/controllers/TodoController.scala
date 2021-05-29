@@ -2,7 +2,7 @@ package todorestgraphqlsample.controllers
 
 import cats.data.EitherT
 import play.api.mvc.{ AbstractController, Action, AnyContent, ControllerComponents }
-import todorestgraphqlsample.common.validators.JsonValidator.JsValueJsonValidator
+import todorestgraphqlsample.common.utils.JsonValidator.JsValueJsonValidator
 import cats.implicits._
 import todorestgraphqlsample.common.results.Results.Result
 import todorestgraphqlsample.models.api.{ CreateTodo, Todo }
