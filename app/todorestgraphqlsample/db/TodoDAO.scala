@@ -8,8 +8,6 @@ import slick.jdbc.JdbcBackend.Database
 import scala.concurrent.{ ExecutionContext, Future }
 import dbdata.Tables
 import todorestgraphqlsample.models.api.Todo.patch
-import todorestgraphqlsample.models.api
-import todorestgraphqlsample.models.api.{ CreateTodo, Todo }
 import org.joda.time.DateTime
 import todorestgraphqlsample.models.api
 import todorestgraphqlsample.models.api.{ CreateTodo, Todo }

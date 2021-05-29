@@ -24,21 +24,6 @@ val githubSettings = Seq(
     )
 )
 
-val latest = sys.env.get("BRANCH") match {
-  case Some(str) => if (str.equals("master")) true else false
-  case None      => false
-}
-
-val buildVersion = sys.env.get("VERSION") match {
-  case Some(str) => str
-  case None      => version.key.toString()
-}
-
-val dockerRegistry = sys.env.get("DOCKER_REGISTRY") match {
-  case Some(repo) => Some(repo)
-  case None       => Some("localhost")
-}
-
 val generatedFilePath: String = "/dbdata/Tables.scala"
 val flywayDbName: String      = "todo-rest-graphql-sample"
 val dbConf                    = settingKey[DbConf]("Typesafe config file with slick settings")
@@ -115,7 +100,7 @@ slickGen := Def.taskDyn(generateTablesTask((Global / dbConf).value)).value
 /*project definitions*/
 
 lazy val root = (project in file("."))
-  .enablePlugins(PlayScala, DockerPlugin, SwaggerPlugin)
+  .enablePlugins(PlayScala, DockerPlugin)
   .dependsOn(slick)
   .settings(
     scalaVersion := Dependencies.scalaVersion,
@@ -124,25 +109,7 @@ lazy val root = (project in file("."))
     // Adding Cache
     libraryDependencies ++= Seq(ehcache),
     dependencyOverrides += Dependencies.sl4j, // Override to avoid problems with HikariCP 4.x
-    swaggerDomainNameSpaces := Seq(
-      "models"
-    ),                                        // New Models have to be added here to be referencable in routes
-    swaggerPrettyJson := true,
-    swaggerV3 := true,
     githubSettings
-  )
-  .settings(
-    Seq(
-      maintainer := "innFactory",
-      version := buildVersion,
-      Docker / packageName := "bootstrap-play2",
-      dockerUpdateLatest := latest,
-      dockerRepository := dockerRegistry,
-      dockerExposedPorts := Seq(8080, 8080),
-      dockerEntrypoint := Seq(""),
-      dockerBaseImage := "openjdk:11.0.6-jre-slim",
-      dockerEntrypoint := Seq("/opt/docker/bin/bootstrap-play2", "-Dplay.server.pidfile.path=/dev/null")
-    )
   )
 
 lazy val flyway = (project in file("modules/flyway"))
