@@ -9,8 +9,8 @@ POST    /v1/todo                        todorestgraphqlsample.controllers.TodoCo
 PATCH   /v1/todo                        todorestgraphqlsample.controllers.TodoController.patch
 DELETE  /v1/todo/:id                    todorestgraphqlsample.controllers.TodoController.delete(id: Int)
 
-POST    /graphql                        todorestgraphqlsample.graphql.GraphQLController.graphql
-POST    /graphql/schema                 todorestgraphqlsample.graphql.GraphQLController.renderSchema
+POST    /graphql                        todorestgraphqlsample.controllers.GraphQLController.graphql
+POST    /graphql/schema                 todorestgraphqlsample.controllers.GraphQLController.renderSchema
 
 # Map static resources from the /public folder to the /assets URL path
 ### NoDocs ###

@@ -1,42 +1,44 @@
-package todorestgraphqlsample.graphql
+package todorestgraphqlsample.controllers
 
-import de.innfactory.grapqhl.play.controller.GraphQLControllerBase
-import de.innfactory.grapqhl.play.request.common.ExecutionHelperBase
-import de.innfactory.grapqhl.play.request.implicits.JsValueParser.GraphQLBodyEnhancedJsValue
-import play.api.libs.json.JsValue
-
-import javax.inject.{ Inject, Singleton }
+import play.api.libs.json.{ JsObject, JsString, JsValue, Json }
 import play.api.mvc._
 import sangria.renderer.{ SchemaFilter, SchemaRenderer }
 import todorestgraphqlsample.graphql.schema.SchemaDefinition
+import todorestgraphqlsample.graphql.{ ExecutionServices, RequestExecutor }
 
+import javax.inject.{ Inject, Singleton }
 import scala.concurrent.{ ExecutionContext, Future }
 
 @Singleton
 class GraphQLController @Inject() (
   cc: ControllerComponents,
   executionServices: ExecutionServices,
-  requestExecutor: RequestExecutor,
-  executionHelper: ExecutionHelperBase = new ExecutionHelperBase()
+  requestExecutor: RequestExecutor
 )(implicit ec: ExecutionContext)
     extends AbstractController(cc) {
 
   def graphql: Action[AnyContent] =
     Action.async { request ⇒
       val json: JsValue = request.body.asJson.get // Get the request body as json
-      val graphQLBody   = json.getGraphQLBodyParameters(executionHelper)
+      val query         = (json \ "query").as[String]
+      val operationName = (json \ "operationName").asOpt[String]
+      val variables     = (json \ "variables").toOption.flatMap {
+        case JsString(vars) ⇒
+          Some(if (vars.trim == "" || vars.trim == "null") Json.obj() else Json.parse(vars).as[JsObject])
+        case obj: JsObject  ⇒ Some(obj)
+        case _              ⇒ None
+      }
       requestExecutor.executeQuery(
-        graphQLBody.query,
-        graphQLBody.variables,
-        graphQLBody.operation,
-        executionHelper.isTracingEnabled(request),
+        query,
+        variables,
+        operationName,
         request,
         executionServices
       )
     }
 
   def renderSchema: Action[AnyContent] =
-    Action.async { request =>
+    Action.async { _ =>
       val renderedSchema = SchemaRenderer.renderSchema(
         SchemaDefinition.graphQLSchema,
         SchemaFilter.withoutGraphQLBuiltIn
