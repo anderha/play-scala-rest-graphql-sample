@@ -1,5 +1,4 @@
 import com.typesafe.config.ConfigFactory
-import com.typesafe.sbt.packager.docker.DockerPlugin.autoImport.dockerEntrypoint
 import sbt.{ Def, Resolver, _ }
 //settings
 
@@ -12,7 +11,6 @@ val token = sys.env.getOrElse("GITHUB_TOKEN", "")
 
 val githubSettings = Seq(
   githubOwner := "innFactory",
-  githubRepository := "bootstrap-play2",
   credentials :=
     Seq(
       Credentials(
@@ -36,8 +34,8 @@ Test / fork := true
 
 // Commands
 
-addCommandAlias("ciTests", "; clean; coverage; flyway/flywayMigrate; test; coverageReport")
-addCommandAlias("localTests", "; clean; flyway/flywayMigrate; test")
+addCommandAlias("testsWithCov", "; clean; coverage; flyway/flywayMigrate; test; coverageReport")
+addCommandAlias("tests", "; clean; flyway/flywayMigrate; test")
 
 /* TaskKeys */
 lazy val slickGen = taskKey[Seq[File]]("slickGen")
@@ -100,7 +98,7 @@ slickGen := Def.taskDyn(generateTablesTask((Global / dbConf).value)).value
 /*project definitions*/
 
 lazy val root = (project in file("."))
-  .enablePlugins(PlayScala, DockerPlugin)
+  .enablePlugins(PlayScala)
   .dependsOn(slick)
   .settings(
     scalaVersion := Dependencies.scalaVersion,
@@ -132,6 +130,9 @@ lazy val globalResources = file("conf")
 
 /* Scala format */
 ThisBuild / scalafmtOnCompile := true // all projects
+
+lazy val scalaVersionFirstTwo = """[\d]*[\.][\d]*""".r.findFirstIn(Dependencies.scalaVersion).get
+Compile / managedSourceDirectories += baseDirectory.value / s"target/scala-${scalaVersionFirstTwo}/src_managed"
 
 /* Change compiling */
 Compile / sourceGenerators += Def.taskDyn(generateTablesTask((Global / dbConf).value)).taskValue
