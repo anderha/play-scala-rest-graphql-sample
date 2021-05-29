@@ -6,13 +6,6 @@ import sangria.schema.{ Argument, LongType, OptionInputType, StringType }
 import todorestgraphqlsample.models.api.{ CreateTodo, Todo }
 
 object Arguments {
-  val TodoFilterArg: Argument[Option[String]] =
-    Argument(
-      "filter",
-      OptionInputType(StringType),
-      description = "Filters for Todos, separated by & with key=value"
-    )
-
   val TodoId: Argument[Long] =
     Argument(
       "id",
