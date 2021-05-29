@@ -2,12 +2,12 @@ package testutils
 
 import akka.util.Timeout
 import org.scalatest
+import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 import play.api.Application
 import play.api.libs.json.{ JsValue, Reads }
 import play.api.mvc.{ AnyContentAsJson, Result }
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import org.scalatest.MustMatchers._
 
 import scala.concurrent.Future
 

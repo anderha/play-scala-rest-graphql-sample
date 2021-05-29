@@ -26,7 +26,7 @@ class TodoController @Inject() (cc: ControllerComponents, todoRepository: TodoRe
       todoRepository.lookup(id).completeResult()
     }
 
-  def post(): Action[AnyContent] =
+  def post: Action[AnyContent] =
     Action.async { request =>
       val json = request.body.asJson.get
 

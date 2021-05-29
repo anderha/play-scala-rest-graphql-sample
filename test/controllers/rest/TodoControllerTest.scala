@@ -1,4 +1,4 @@
-package controllers
+package controllers.rest
 
 import org.scalatestplus.play.{ BaseOneAppPerSuite, PlaySpec }
 import play.api.libs.json._
@@ -11,7 +11,7 @@ import todorestgraphqlsample.models.api.Todo
 
 import scala.concurrent.Future
 
-class TodoControllerRESTTest extends PlaySpec with BaseOneAppPerSuite with TestApplicationFactory {
+class TodoControllerTest extends PlaySpec with BaseOneAppPerSuite with TestApplicationFactory {
   private val titleOfTodo       = "REST Testtodo"
   private val descriptionOfTodo = "This is a REST test!"
 

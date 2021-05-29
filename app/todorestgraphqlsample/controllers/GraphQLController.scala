@@ -18,15 +18,15 @@ class GraphQLController @Inject() (
     extends AbstractController(cc) {
 
   def graphql: Action[AnyContent] =
-    Action.async { request ⇒
+    Action.async { request =>
       val json: JsValue = request.body.asJson.get // Get the request body as json
       val query         = (json \ "query").as[String]
       val operationName = (json \ "operationName").asOpt[String]
       val variables     = (json \ "variables").toOption.flatMap {
-        case JsString(vars) ⇒
+        case JsString(vars) =>
           Some(if (vars.trim == "" || vars.trim == "null") Json.obj() else Json.parse(vars).as[JsObject])
-        case obj: JsObject  ⇒ Some(obj)
-        case _              ⇒ None
+        case obj: JsObject  => Some(obj)
+        case _              => None
       }
       requestExecutor.executeQuery(
         query,

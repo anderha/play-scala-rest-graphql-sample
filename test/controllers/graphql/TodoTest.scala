@@ -1,7 +1,7 @@
-package controllers
+package controllers.graphql
 
 import org.scalatestplus.play.{ BaseOneAppPerSuite, PlaySpec }
-import play.api.libs.json.{ JsObject, JsValue, Json }
+import play.api.libs.json.{ JsValue, Json }
 import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -10,7 +10,7 @@ import testutils.TestApplicationFactory
 
 import scala.concurrent.Future
 
-class TodoControllerGraphQLTest extends PlaySpec with BaseOneAppPerSuite with TestApplicationFactory {
+class TodoTest extends PlaySpec with BaseOneAppPerSuite with TestApplicationFactory {
   private val titleOfTodo       = "GraphQL Testtodo"
   private val descriptionOfTodo = "This is a GraphQL test!"
 
