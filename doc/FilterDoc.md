@@ -9,7 +9,6 @@ Filters are defined in [application.conf](../conf/application.conf):
 
         play.todorestgraphqlsample.filters.enabled = [
           "todorestgraphqlsample.filters.logging.AccessLoggingFilter",
-          "todorestgraphqlsample.filters.access.RouteBlacklistFilter",
           "play.todorestgraphqlsample.filters.cors.CORSFilter"
          ]
 
@@ -22,12 +21,5 @@ Filters are defined in [application.conf](../conf/application.conf):
 
         logging.access.statusList = [404,403,401]
         logging.access.statusList = ${?LOGGING_STATUSLIST}
-
-### RouteBlacklistFilter 
-
-[Go To File](../app/de/innfactory/todorestgraphqlsample/filters/access/RouteBlacklistFilter.scala)
-
-- Blocks all requests defined in RouteBlacklistFilter.scala
-
 
 
