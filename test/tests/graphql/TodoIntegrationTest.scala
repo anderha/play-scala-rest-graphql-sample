@@ -24,7 +24,7 @@ class TodoIntegrationTest extends PlaySpec with BaseOneAppPerSuite with TestAppl
     "be creatable with createTodo" in {
       val futureResult: Future[Result] = route(
         app,
-        FakeRequest(POST, "/tests/graphql").withJsonBody(
+        FakeRequest(POST, "/graphql").withJsonBody(
           Json.obj(
             "operationName" -> "CreateTodo",
             "query"         -> s""" 
@@ -69,7 +69,7 @@ class TodoIntegrationTest extends PlaySpec with BaseOneAppPerSuite with TestAppl
   "be gettable with todo(id)" in {
     val futureResult: Future[Result] = route(
       app,
-      FakeRequest(POST, "/tests/graphql").withJsonBody(
+      FakeRequest(POST, "/graphql").withJsonBody(
         Json.obj(
           "operationName" -> "GetTodo",
           "query"         -> s""" 
@@ -110,7 +110,7 @@ class TodoIntegrationTest extends PlaySpec with BaseOneAppPerSuite with TestAppl
   "be patchable with updateTodo" in {
     val futureResult: Future[Result] = route(
       app,
-      FakeRequest(POST, "/tests/graphql").withJsonBody(
+      FakeRequest(POST, "/graphql").withJsonBody(
         Json.obj(
           "operationName" -> "UpdateTodo",
           "query"         -> s""" 
@@ -158,7 +158,7 @@ class TodoIntegrationTest extends PlaySpec with BaseOneAppPerSuite with TestAppl
   "occur when getting all" in {
     val futureResult: Future[Result] = route(
       app,
-      FakeRequest(POST, "/tests/graphql").withJsonBody(
+      FakeRequest(POST, "/graphql").withJsonBody(
         Json.obj(
           "operationName" -> "GetAll",
           "query"         -> s""" 
@@ -206,7 +206,7 @@ class TodoIntegrationTest extends PlaySpec with BaseOneAppPerSuite with TestAppl
   "be deletable by deleteTodo" in {
     val futureResult: Future[Result] = route(
       app,
-      FakeRequest(POST, "/tests/graphql").withJsonBody(
+      FakeRequest(POST, "/graphql").withJsonBody(
         Json.obj(
           "operationName" -> "Delete",
           "query"         -> s""" 

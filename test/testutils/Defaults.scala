@@ -2,7 +2,7 @@ package testutils
 
 object Defaults {
   val todoRoute                       = "/v1/todo"
-  val graphQlEndpoint                 = "/tests/graphql"
+  val graphQlEndpoint                 = "/graphql"
   val millis                          = 1621082427626L
   val titleOfRESTTodo                 = "REST Testtodo"
   val titleOfRESTTodoUpdated          = "REST Testtodo Updated"
