@@ -1,5 +1,6 @@
 package todorestgraphqlsample.models.api
 
+import org.joda.time.DateTime
 import play.api.libs.json.{ Format, Json }
 
 case class Todo(id: Long, title: String, description: String, isDone: Boolean, doneAt: Option[Long], createdAt: Long)
@@ -15,7 +16,7 @@ object Todo {
       isDone = newObject.isDone,
       doneAt =
         if (oldObject.isDone && newObject.isDone) oldObject.doneAt
-        else if (newObject.isDone) Some(System.currentTimeMillis)
+        else if (newObject.isDone) Some(new DateTime().getMillis)
         else None,
       createdAt = oldObject.createdAt
     )

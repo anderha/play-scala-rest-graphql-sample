@@ -10,7 +10,7 @@ import scala.concurrent.Future
 
 object FakeGraphQLRequest {
   def getFake(body: JsObject, headers: (String, String)*)(implicit app: Application): FakeRequest[JsObject] =
-    FakeRequest(POST, "/graphql")
+    FakeRequest(POST, "/tests/graphql")
       .withBody(body)
       .withHeaders(new Headers(headers))
 

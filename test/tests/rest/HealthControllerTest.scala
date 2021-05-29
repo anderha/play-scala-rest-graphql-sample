@@ -1,4 +1,4 @@
-package controllers.rest
+package tests.rest
 
 import org.scalatestplus.play.{ BaseOneAppPerSuite, PlaySpec }
 import play.api.mvc.Result

@@ -1,4 +1,4 @@
-package models.graphql
+package testutils.models.graphql
 
 import play.api.libs.json.{ Json, OFormat }
 

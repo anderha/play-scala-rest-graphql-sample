@@ -11,7 +11,6 @@ import todorestgraphqlsample.db.TodoDAO
 import todorestgraphqlsample.graphql.ErrorParserImpl
 import todorestgraphqlsample.models.api.{ CreateTodo, Todo }
 
-import scala.Right
 import scala.concurrent.{ ExecutionContext, Future }
 
 class TodoRepository @Inject() (todoDAO: TodoDAO)(implicit ec: ExecutionContext, errorParser: ErrorParserImpl) {

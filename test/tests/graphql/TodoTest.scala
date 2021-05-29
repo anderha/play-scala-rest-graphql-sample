@@ -1,4 +1,4 @@
-package controllers.graphql
+package tests.graphql
 
 import org.scalatestplus.play.{ BaseOneAppPerSuite, PlaySpec }
 import play.api.libs.json.{ JsValue, Json }
@@ -30,7 +30,7 @@ class TodoTest extends PlaySpec with BaseOneAppPerSuite with TestApplicationFact
     "return a newly created todo" in {
       val futureResult: Future[Result] = route(
         app,
-        FakeRequest(POST, "/graphql").withJsonBody(
+        FakeRequest(POST, "/tests/graphql").withJsonBody(
           Json.obj(
             "operationName" -> "CreateTodo",
             "query"         -> s""" 

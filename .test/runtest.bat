@@ -21,7 +21,7 @@ goto:eof
 
 :connection_established
 echo Running tests
-sbt testsWithCov
+call sbt testsWithCov
 echo Shutdown docker container
 docker stop testContainer
 docker rm testContainer

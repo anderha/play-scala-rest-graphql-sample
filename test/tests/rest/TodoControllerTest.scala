@@ -1,20 +1,17 @@
-package controllers.rest
+package tests.rest
 
 import org.scalatestplus.play.{ BaseOneAppPerSuite, PlaySpec }
 import play.api.libs.json._
 import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import testutils.Defaults.{ millis, todoRoute }
+import testutils.Defaults.{ descriptionOfRESTTodo, millis, titleOfRESTTodo, todoRoute }
 import testutils.TestApplicationFactory
 import todorestgraphqlsample.models.api.Todo
 
 import scala.concurrent.Future
 
 class TodoControllerTest extends PlaySpec with BaseOneAppPerSuite with TestApplicationFactory {
-  private val titleOfTodo       = "REST Testtodo"
-  private val descriptionOfTodo = "This is a REST test!"
-
   "POST on route of todo" must {
     "return a newly created todo" in {
       val futureResult: Future[Result] = route(
@@ -22,8 +19,8 @@ class TodoControllerTest extends PlaySpec with BaseOneAppPerSuite with TestAppli
         FakeRequest(POST, todoRoute).withJsonBody(
           Json.parse(
             s"""{
-               |  "title": "${titleOfTodo}",
-               |  "description": "${descriptionOfTodo}" 
+               |  "title": "${titleOfRESTTodo}",
+               |  "description": "${descriptionOfRESTTodo}" 
                |}""".stripMargin
           )
         )
@@ -41,8 +38,8 @@ class TodoControllerTest extends PlaySpec with BaseOneAppPerSuite with TestAppli
       // Check returned content contains created todo
       content mustEqual Json.obj(
         "id"          -> 2,
-        "title"       -> s"$titleOfTodo",
-        "description" -> s"$descriptionOfTodo",
+        "title"       -> s"$titleOfRESTTodo",
+        "description" -> s"$descriptionOfRESTTodo",
         "isDone"      -> false,
         "createdAt"   -> millis
       )
@@ -64,7 +61,7 @@ class TodoControllerTest extends PlaySpec with BaseOneAppPerSuite with TestAppli
           Json.parse(
             s"""{
                |  "title": "",
-               |  "description": "$descriptionOfTodo" 
+               |  "description": "$descriptionOfRESTTodo" 
                |}""".stripMargin
           )
         )

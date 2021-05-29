@@ -66,6 +66,10 @@ class RequestExecutor {
             queryReducers = baseQueryReducers
           )
           .map(Ok(_))
+          .recover {
+            case error: QueryAnalysisError => BadRequest(error.resolveError)
+            case error: ErrorWithResolver  => InternalServerError(error.resolveError)
+          }
       case Failure(error: SyntaxError) => handleSyntaxError(error)
       case Failure(_)                  => Future(BadRequest(""))
     }
