@@ -1,49 +1,19 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
-# - - - - - - - - PROBES - - - - - - - -
+GET     /                               todorestgraphqlsample.controllers.HealthController.ping
 
-###
-#  summary: Health check
-#  tags:
-#    - probes
-#  responses:
-#     '200':
-#       description: OK
-###
-GET                /                                                todorestgraphqlsample.controllers.HealthController.ping
+GET     /v1/todo                        todorestgraphqlsample.controllers.TodoController.getAll
+GET     /v1/todo/:id                    todorestgraphqlsample.controllers.TodoController.getById(id: Int)
+POST    /v1/todo                        todorestgraphqlsample.controllers.TodoController.post
+PATCH   /v1/todo                        todorestgraphqlsample.controllers.TodoController.patch
+DELETE  /v1/todo/:id                    todorestgraphqlsample.controllers.TodoController.delete(id: Int)
 
-###
-#  summary: Liveness check
-#  tags:
-#    - probes
-#  responses:
-#     '200':
-#       description: OK
-###
-GET                /liveness                                        todorestgraphqlsample.controllers.HealthController.ping
-
-###
-#  summary: Readiness check
-#  tags:
-#    - probes
-#  responses:
-#     '200':
-#       description: OK
-###
-GET                /readiness                                       todorestgraphqlsample.controllers.HealthController.ping
-
-GET     /v1/todo                      todorestgraphqlsample.controllers.TodoController.getAll
-GET     /v1/todo/:id                  todorestgraphqlsample.controllers.TodoController.getById(id: Int)
-POST    /v1/todo                       todorestgraphqlsample.controllers.TodoController.post
-PATCH   /v1/todo                      todorestgraphqlsample.controllers.TodoController.patch
-DELETE  /v1/todo/:id                       todorestgraphqlsample.controllers.TodoController.delete(id: Int)
-
-POST               /graphql                              todorestgraphqlsample.graphql.GraphQLController.graphql
-POST               /graphql/schema                              todorestgraphqlsample.graphql.GraphQLController.renderSchema
+POST    /graphql                        todorestgraphqlsample.graphql.GraphQLController.graphql
+POST    /graphql/schema                 todorestgraphqlsample.graphql.GraphQLController.renderSchema
 
 # Map static resources from the /public folder to the /assets URL path
 ### NoDocs ###
-GET                 /assets/*file                                   controllers.Assets.versioned(path="/public", file: Asset)
+GET     /assets/*file                   controllers.Assets.versioned(path="/public", file: Asset)
 ### NoDocs ###
-GET                 /v1/assets/*file                                controllers.Assets.versioned(path="/public", file: Asset)
+GET     /v1/assets/*file                controllers.Assets.versioned(path="/public", file: Asset)
