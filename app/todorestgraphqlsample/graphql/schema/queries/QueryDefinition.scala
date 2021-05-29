@@ -2,13 +2,13 @@ package todorestgraphqlsample.graphql.schema.queries
 
 import todorestgraphqlsample.graphql.schema.queries.Todo.{ allTodos, todoById }
 import sangria.schema.{ fields, ObjectType }
-import todorestgraphqlsample.graphql.GraphQLExecutionContext
+import todorestgraphqlsample.repositories.TodoRepository
 
 object QueryDefinition {
-  val Query: ObjectType[GraphQLExecutionContext, Unit] = ObjectType(
+  val Query: ObjectType[TodoRepository, Unit] = ObjectType(
     name = "Query",
     description = "API Queries",
-    fields = fields[GraphQLExecutionContext, Unit](
+    fields = fields[TodoRepository, Unit](
       allTodos,
       todoById
     )

@@ -9,6 +9,7 @@ import sangria.execution.{ ErrorWithResolver, Executor, QueryAnalysisError, Quer
 import sangria.parser.{ QueryParser, SyntaxError }
 import todorestgraphqlsample.graphql.schema.SchemaDefinition
 import de.innfactory.grapqhl.sangria.marshalling.playJson._
+import todorestgraphqlsample.repositories.TodoRepository
 
 import scala.concurrent.{ ExecutionContext, Future }
 import scala.util.{ Failure, Success }
@@ -50,30 +51,22 @@ class RequestExecutor {
     query: String,
     variables: Option[JsObject],
     operationName: Option[String],
-    request: Request[AnyContent],
-    services: ExecutionServices
-  )(implicit ec: ExecutionContext): Future[Result] = {
-    val context: GraphQLExecutionContext = contextBuilder(services, request)
+    todoRepository: TodoRepository
+  )(implicit ec: ExecutionContext): Future[Result] =
     QueryParser.parse(query) match {
       case Success(queryAst)           =>
         Executor
-          .execute[GraphQLExecutionContext, Unit, JsObject](
+          .execute[TodoRepository, Unit, JsObject](
             SchemaDefinition.graphQLSchema,
             queryAst,
-            context,
+            todoRepository,
             operationName = operationName,
             variables = variables.getOrElse(Json.obj()),
             exceptionHandler = ExceptionHandling.exceptionHandler,
             queryReducers = baseQueryReducers
           )
           .map(Ok(_))
-          .recover {
-            case error: QueryAnalysisError => BadRequest(error.resolveError)
-            case error: ErrorWithResolver  => InternalServerError(error.resolveError)
-          }
-      // can't parse GraphQL query, return error
       case Failure(error: SyntaxError) => handleSyntaxError(error)
-      case Failure(error)              => Future(BadRequest(""))
+      case Failure(_)                  => Future(BadRequest(""))
     }
-  }
 }

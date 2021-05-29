@@ -5,6 +5,7 @@ import play.api.mvc._
 import sangria.renderer.{ SchemaFilter, SchemaRenderer }
 import todorestgraphqlsample.graphql.schema.SchemaDefinition
 import todorestgraphqlsample.graphql.{ ExecutionServices, RequestExecutor }
+import todorestgraphqlsample.repositories.TodoRepository
 
 import javax.inject.{ Inject, Singleton }
 import scala.concurrent.{ ExecutionContext, Future }
@@ -12,7 +13,7 @@ import scala.concurrent.{ ExecutionContext, Future }
 @Singleton
 class GraphQLController @Inject() (
   cc: ControllerComponents,
-  executionServices: ExecutionServices,
+  todoRepository: TodoRepository,
   requestExecutor: RequestExecutor
 )(implicit ec: ExecutionContext)
     extends AbstractController(cc) {
@@ -32,8 +33,7 @@ class GraphQLController @Inject() (
         query,
         variables,
         operationName,
-        request,
-        executionServices
+        todoRepository
       )
     }
 
