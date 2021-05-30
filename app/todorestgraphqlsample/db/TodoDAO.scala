@@ -12,8 +12,8 @@ import todorestgraphqlsample.models.api.Todo.patch
 import org.joda.time.DateTime
 import todorestgraphqlsample.common.results.errors.Errors.{ BadRequest, DatabaseResult, NotFound }
 import todorestgraphqlsample.models.api
-import todorestgraphqlsample.models.api.{ CreateTodo, Todo }
-import todorestgraphqlsample.common.results.Results.{ ResultStatus }
+import todorestgraphqlsample.models.api.{ CreateTodo, Todo, UpdateTodo }
+import todorestgraphqlsample.common.results.Results.ResultStatus
 
 import javax.inject.Singleton
 
@@ -22,7 +22,7 @@ trait TodoDAO {
   def lookup(id: Long): Future[Result[Todo]]
   def all(): Future[Seq[Todo]]
   def create(todoToCreate: CreateTodo): Future[Result[Todo]]
-  def update(todo: Todo): Future[Result[Todo]]
+  def update(todo: UpdateTodo): Future[Result[Todo]]
   def delete(id: Long): Future[Result[Todo]]
   def close(): Future[Unit]
 }
@@ -53,7 +53,7 @@ class TodoDAOImpl @Inject() (db: Database)(implicit ec: ExecutionContext) extend
     result
   }
 
-  def update(todo: api.Todo): Future[Result[api.Todo]] = {
+  def update(todo: api.UpdateTodo): Future[Result[api.Todo]] = {
     val result = for {
       existing    <- EitherT[Future, ResultStatus, api.Todo](lookup(todo.id).map({
                        case Left(_)      => Left(BadRequest())

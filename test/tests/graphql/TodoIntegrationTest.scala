@@ -124,9 +124,7 @@ class TodoIntegrationTest extends PlaySpec with BaseOneAppPerSuite with TestAppl
               "id"          -> 2,
               "title"       -> s"$titleOfGraphQLTodoUpdated",
               "description" -> s"$descriptionOfGraphQLTodoUpdated",
-              "isDone"      -> true,
-              "doneAt"      -> millis,
-              "createdAt"   -> millis
+              "isDone"      -> true
             )
           )
         )

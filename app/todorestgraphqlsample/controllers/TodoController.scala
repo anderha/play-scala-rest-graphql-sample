@@ -5,7 +5,7 @@ import play.api.mvc.{ AbstractController, Action, AnyContent, ControllerComponen
 import cats.implicits._
 import todorestgraphqlsample.common.results.Results.Result
 import play.api.libs.json.{ JsError, JsSuccess, JsValue }
-import todorestgraphqlsample.models.api.{ CreateTodo, Todo }
+import todorestgraphqlsample.models.api.{ CreateTodo, Todo, UpdateTodo }
 import todorestgraphqlsample.repositories.TodoRepository
 import todorestgraphqlsample.common.results.errors.Errors
 
@@ -47,11 +47,11 @@ class TodoController @Inject() (cc: ControllerComponents, todoRepository: TodoRe
       val json = request.body.asJson.get
 
       val result = for {
-        _            <- EitherT(Future(json.validate[Todo] match {
+        _            <- EitherT(Future(json.validate[UpdateTodo] match {
                           case JsSuccess(_, _) => Right(true)
                           case JsError(_)      => Left(Errors.BadRequest())
                         }))
-        todoToUpdate <- EitherT(Future(jsonAsTodo(json)))
+        todoToUpdate <- EitherT(Future(jsonAsUpdateTodo(json)))
         updated      <- EitherT(todoRepository.patch(todoToUpdate))
       } yield updated
       result.value.completeResult()
@@ -64,4 +64,5 @@ class TodoController @Inject() (cc: ControllerComponents, todoRepository: TodoRe
 
   private def jsonAsCreateTodo(json: JsValue): Result[CreateTodo] = Right(json.as[CreateTodo])
   private def jsonAsTodo(json: JsValue): Result[Todo]             = Right(json.as[Todo])
+  private def jsonAsUpdateTodo(json: JsValue): Result[UpdateTodo] = Right(json.as[UpdateTodo])
 }

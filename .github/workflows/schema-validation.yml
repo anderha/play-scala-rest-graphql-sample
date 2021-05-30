@@ -12,5 +12,6 @@ jobs:
       - uses: kamilkisiela/graphql-inspector@master
         with:
           schema: 'master:schema.graphql'
-          # fail-on-breaking: true default true
-          # endpoint: 'https://example.com/graphql'
+          approve-label: 'expected-breaking-change'
+          # fail-on-breaking: true # default true
+          # endpoint: '' # e.g. 'https://example.com/graphql'

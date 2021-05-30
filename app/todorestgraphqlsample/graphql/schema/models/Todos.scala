@@ -2,7 +2,7 @@ package todorestgraphqlsample.graphql.schema.models
 
 import sangria.macros.derive.{ deriveInputObjectType, deriveObjectType, InputObjectTypeName, ReplaceField }
 import sangria.schema.{ BooleanType, Field, InputObjectType, LongType, ObjectType, OptionType, StringType }
-import todorestgraphqlsample.models.api.{ CreateTodo, Todo }
+import todorestgraphqlsample.models.api.{ CreateTodo, Todo, UpdateTodo }
 
 object Todos {
   val TodoType: ObjectType[Unit, Todo] = deriveObjectType(
@@ -37,7 +37,7 @@ object Todos {
   val CreateTodoType: InputObjectType[CreateTodo] = deriveInputObjectType[CreateTodo](
     InputObjectTypeName("TodoToCreateType")
   )
-  val UpdateTodoType: InputObjectType[Todo]       = deriveInputObjectType[Todo](
+  val UpdateTodoType: InputObjectType[UpdateTodo] = deriveInputObjectType[UpdateTodo](
     InputObjectTypeName("TodoToUpdateType")
   )
 }
