@@ -87,8 +87,7 @@ class TodoIntegrationTest extends PlaySpec with BaseOneAppPerSuite with TestAppl
              |  "id": 2,
              |  "title": "${titleOfRESTTodoUpdated}",
              |  "description": "${descriptionOfRESTTodoUpdated}",
-             |  "isDone": true,
-             |  "createdAt": $millis
+             |  "isDone": true
              |}""".stripMargin
         )
       )

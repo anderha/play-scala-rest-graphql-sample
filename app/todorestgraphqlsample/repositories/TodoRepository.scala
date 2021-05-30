@@ -2,14 +2,14 @@ package todorestgraphqlsample.repositories
 
 import cats.data.EitherT
 import cats.implicits.catsSyntaxEitherId
-import com.google.inject.{ Inject }
+import com.google.inject.Inject
 import todorestgraphqlsample.common.results.Results.Result
 import todorestgraphqlsample.common.results.Results.ResultStatus
 import todorestgraphqlsample.common.results.errors.Errors.BadRequest
 import de.innfactory.grapqhl.play.result.implicits.GraphQlResult.EnhancedFutureResult
 import todorestgraphqlsample.db.TodoDAO
 import todorestgraphqlsample.graphql.ErrorParserImpl
-import todorestgraphqlsample.models.api.{ CreateTodo, Todo }
+import todorestgraphqlsample.models.api.{ CreateTodo, Todo, UpdateTodo }
 
 import scala.concurrent.{ ExecutionContext, Future }
 
@@ -26,7 +26,7 @@ class TodoRepository @Inject() (todoDAO: TodoDAO)(implicit ec: ExecutionContext,
   def createTodoGraphQl(todoToCreate: CreateTodo): Future[Todo] =
     post(todoToCreate).completeOrThrow
 
-  def updateTodoGraphQl(todoToUpdate: Todo): Future[Todo] =
+  def updateTodoGraphQl(todoToUpdate: UpdateTodo): Future[Todo] =
     patch(todoToUpdate).completeOrThrow
 
   def deleteGraphQl(id: Long): Future[Todo] =
@@ -50,7 +50,7 @@ class TodoRepository @Inject() (todoDAO: TodoDAO)(implicit ec: ExecutionContext,
     result.value
   }
 
-  def patch(todo: Todo): Future[Result[Todo]] = {
+  def patch(todo: UpdateTodo): Future[Result[Todo]] = {
     val result = for {
       oldTodo     <- EitherT(todoDAO.lookup(todo.id))
       updatedTodo <- EitherT(todoDAO.update(todo.copy(id = oldTodo.id)))
