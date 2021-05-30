@@ -1,0 +1,16 @@
+name: Schema Validation
+
+on: [push]
+
+jobs:
+  test:
+    name: Validate Schema
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - uses: kamilkisiela/graphql-inspector@master
+        with:
+          schema: 'master:schema.graphql'
+          # fail-on-breaking: true default true
+          # endpoint: 'https://example.com/graphql'
