@@ -28,7 +28,7 @@ sbt run
 ### Postman
 
 - open your postman installation
-- import the postman collection from [.\doc\GraphQL-TodoApp-Testchain.postman_collection.json](.\doc\GraphQL-TodoApp-Testchain.postman_collection.json)
+- import the postman collection from [.\doc\GraphQL-TodoApp-Testchain.postman_collection.json](./doc/GraphQL-TodoApp-Testchain.postman_collection.json)
 - make sure you have started the webservice
 - run the collection  
   ![](./doc/postman-run-collection.png)
