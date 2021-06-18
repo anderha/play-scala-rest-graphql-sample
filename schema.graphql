@@ -1,7 +1,7 @@
-"Schema for Bootstrap API "
+"Schema for GraphQL Todo Sample API "
 schema {
-query: Query
-mutation: Mutation
+  query: Query
+  mutation: Mutation
 }
 
 "The `Long` scalar type represents non-fractional signed whole numeric values. Long can represent values between -(2^63) and 2^63 - 1."
@@ -9,37 +9,37 @@ scalar Long
 
 "API Mutations"
 type Mutation {
-createTodo(todoToCreate: TodoToCreateType!): Todo!
-updateTodo(todoToUpdate: TodoToUpdateType!): Todo!
-deleteTodo(id: Long!): Todo!
+  createTodo(todoToCreate: TodoToCreateType!): Todo!
+  updateTodo(todoToUpdate: TodoToUpdateType!): Todo!
+  deleteTodo(id: Long!): Todo!
 }
 
 "API Queries"
 type Query {
-"Query all Todos"
-allTodos: [Todo!]!
+  "Query all Todos"
+  allTodos: [Todo!]!
 
-"Query Todo by its ID"
-todo(id: Long!): Todo!
+  "Query Todo by its ID"
+  todo(id: Long!): Todo!
 }
 
 type Todo {
-id: Long!
-title: String!
-description: String!
-isDone: Boolean!
-doneAt: Long
-createdAt: Long!
+  id: Long!
+  title: String!
+  description: String!
+  isDone: Boolean!
+  doneAt: Long
+  createdAt: Long!
 }
 
 input TodoToCreateType {
-title: String!
-description: String!
+  title: String!
+  description: String!
 }
 
 input TodoToUpdateType {
-id: Long!
-title: String!
-description: String!
-isDone: Boolean!
+  id: Long!
+  title: String!
+  description: String!
+  isDone: Boolean!
 }

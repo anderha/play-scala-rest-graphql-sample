@@ -98,7 +98,7 @@ slickGen := Def.taskDyn(generateTablesTask((Global / dbConf).value)).value
 /*project definitions*/
 
 lazy val root = (project in file("."))
-  .enablePlugins(PlayScala)
+  .enablePlugins(PlayScala, GraphQLSchemaPlugin, GraphQLQueryPlugin)
   .dependsOn(slick)
   .settings(
     scalaVersion := Dependencies.scalaVersion,
@@ -130,6 +130,9 @@ lazy val globalResources = file("conf")
 
 /* Scala format */
 ThisBuild / scalafmtOnCompile := true // all projects
+
+graphqlSchemaSnippet := "todorestgraphqlsample.graphql.schema.SchemaDefinition.graphQLSchema"
+target in graphqlSchemaGen := baseDirectory.value
 
 lazy val scalaVersionFirstTwo = """[\d]*[\.][\d]*""".r.findFirstIn(Dependencies.scalaVersion).get
 Compile / managedSourceDirectories += baseDirectory.value / s"target/scala-${scalaVersionFirstTwo}/src_managed"

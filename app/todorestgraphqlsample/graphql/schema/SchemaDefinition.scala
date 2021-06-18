@@ -15,7 +15,7 @@ object SchemaDefinition {
       Query,
       Some(Mutation),
       description = Some(
-        "Schema for Bootstrap API "
+        "Schema for GraphQL Todo Sample API "
       )
     )
 
