@@ -51,7 +51,7 @@ sbt run
   sbt graphqlSchemaGen
   ```
   output is saved in [schema.graphql](./schema.graphql)
-- github action configuration is found in [.github/schema-validation.yml](./.github/schema-validation.yml)
+- github action configuration is found in [.github/schema-validation.yml](./.github/workflows/schema-validation.yml)
 - schema is validated on pull request to master
 - validation will fail on breaking changes
 - use label 'expected-breaking-change' to mark a pull request when breaking changes are expected, e.g. [https://github.com/anderha/todo-rest-graphql-sample/pull/3](https://github.com/anderha/todo-rest-graphql-sample/pull/3)
