@@ -25,6 +25,16 @@ sbt run
 
 ## Testing
 
+### Postman
+
+- open your postman installation
+- import the postman collection from [.\doc\GraphQL-TodoApp-Testchain.postman_collection.json](.\doc\GraphQL-TodoApp-Testchain.postman_collection.json)
+- make sure you have started the webservice
+- run the collection  
+  ![](./doc/postman-run-collection.png)
+
+### ScalaTest + Play
+
 ```bash
 # Make sure the database is down if you have run the server before
 # Windows
