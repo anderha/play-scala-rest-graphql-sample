@@ -1,0 +1,15 @@
+{
+	"name": "load-testing",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"load-test": "artillery run artillery.yml"
+	},
+	"author": "Alexander Hauenstein",
+	"dependencies": {
+		"artillery": "^1.7.2",
+		"easygraphql-load-tester": "^2.0.5",
+		"graphql": "^15.5.0"
+	}
+}
