@@ -55,3 +55,16 @@ sbt run
 - schema is validated on pull request to master
 - validation will fail on breaking changes
 - use label 'expected-breaking-change' to mark a pull request when breaking changes are expected, e.g. [https://github.com/anderha/todo-rest-graphql-sample/pull/3](https://github.com/anderha/todo-rest-graphql-sample/pull/3)
+
+## Load Testing
+
+- the load test is carried out with [easygraphql-load-tester](https://github.com/EasyGraphQL/easygraphql-load-tester) and [Artillery](https://artillery.io/)
+- make sure the webservice is up and running
+
+```bash
+cd ./load-testing
+# install dependencies
+npm i
+# run load test
+npm run load-test
+```

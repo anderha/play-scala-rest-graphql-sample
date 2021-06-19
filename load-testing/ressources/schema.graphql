@@ -1,4 +1,3 @@
-"Schema for GraphQL Todo Sample API "
 schema {
   query: Query
   mutation: Mutation
@@ -10,8 +9,6 @@ scalar Long
 "API Mutations"
 type Mutation {
   createTodo(todoToCreate: TodoToCreateType!): Todo!
-  updateTodo(todoToUpdate: TodoToUpdateType!): Todo!
-  deleteTodo(id: Long!): Todo!
 }
 
 "API Queries"
