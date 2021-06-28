@@ -12,7 +12,7 @@ config:
     - pause: 5                      # it is possible to pause between phases
     - duration: 5
       arrivalCount: 15              # creates a specified count of virtual users over the duration
-  processor: "./index.js"           # custom JS code, here it is the path to the asygraphql-load-tester configuration
+  processor: "./index.js"           # custom JS code, here it is the path to the easygraphql-load-tester configuration
   defaults:                         # default values like HTTP Headers
     headers:
       "Content-Type": "application/json"
