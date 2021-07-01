@@ -30,13 +30,13 @@ val generateTables            = taskKey[Seq[File]]("Generate slick code")
 
 // Testing
 
-coverageExcludedPackages += "<empty>;Reverse.*;router.*;.*AuthService.*;models\\\\.data\\\\..*;dbdata.Tables*;todorestgraphqlsample.common.jwt.*;todorestgraphqlsample.common.errorHandling.*;todorestgraphqlsample.common.jwt.JwtFilter;db.codegen.*;todorestgraphqlsample.common.pubSub.*;publicmetrics.influx.*"
+coverageExcludedPackages += "<empty>;graphql.codegen*;Reverse.*;router.*;.*AuthService.*;models\\\\.data\\\\..*;dbdata.Tables*;todorestgraphqlsample.common.jwt.*;todorestgraphqlsample.common.errorHandling.*;todorestgraphqlsample.common.jwt.JwtFilter;db.codegen.*;todorestgraphqlsample.common.pubSub.*;publicmetrics.influx.*"
 Test / fork := true
 
 // Commands
 
-addCommandAlias("testsWithCov", "; clean; coverage; flyway/flywayMigrate; test; coverageReport")
-addCommandAlias("tests", "; clean; flyway/flywayMigrate; test")
+addCommandAlias("testsWithCov", "; clean; coverage; flyway/flywayMigrate; graphqlCodegen; test; coverageReport")
+addCommandAlias("tests", "; clean; flyway/flywayMigrate; graphqlCodegen; test")
 
 /* TaskKeys */
 lazy val slickGen = taskKey[Seq[File]]("slickGen")
@@ -149,7 +149,7 @@ graphqlSchemas += GraphQLSchema(
     .taskValue
 )
 graphqlCodegenSchema := graphqlRenderSchema.toTask("todoSchema").value
-Compile / graphqlCodegen / sourceDirectories := Seq(baseDirectory.value / "test/resources")
+Test / graphqlCodegen / sourceDirectories := Seq(baseDirectory.value / "test/resources")
 graphqlCodegen / excludeFilter := HiddenFileFilter || "*.fragment.graphql" || "schema.graphql"
 
 /* configure src_managed as Generated sources root to be able to import generated code */
