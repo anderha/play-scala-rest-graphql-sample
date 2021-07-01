@@ -1,4 +1,5 @@
 import com.typesafe.config.ConfigFactory
+import rocks.muki.graphql.codegen.CodeGenStyles
 import sbt.{ Def, Resolver, _ }
 //settings
 
@@ -98,7 +99,7 @@ slickGen := Def.taskDyn(generateTablesTask((Global / dbConf).value)).value
 /*project definitions*/
 
 lazy val root = (project in file("."))
-  .enablePlugins(PlayScala, GraphQLSchemaPlugin, GraphQLQueryPlugin)
+  .enablePlugins(PlayScala, GraphQLSchemaPlugin, GraphQLQueryPlugin, GraphQLCodegenPlugin)
   .dependsOn(slick)
   .settings(
     scalaVersion := Dependencies.scalaVersion,
@@ -131,9 +132,27 @@ lazy val globalResources = file("conf")
 /* Scala format */
 ThisBuild / scalafmtOnCompile := true // all projects
 
+/* sbt-graphql configure schema generation */
 graphqlSchemaSnippet := "todorestgraphqlsample.graphql.schema.SchemaDefinition.graphQLSchema"
-target in graphqlSchemaGen := baseDirectory.value
+graphqlSchemaGen / target := baseDirectory.value
 
+/* sbt-graphql configure code generation */
+graphqlSchemas += GraphQLSchema(
+  "todoSchema",
+  "The schema to generate code from",
+  Def
+    .task(
+      GraphQLSchemaLoader
+        .fromFile(baseDirectory.value / "schema.graphql")
+        .loadSchema()
+    )
+    .taskValue
+)
+graphqlCodegenSchema := graphqlRenderSchema.toTask("todoSchema").value
+Compile / graphqlCodegen / sourceDirectories := Seq(baseDirectory.value / "test/resources")
+graphqlCodegen / excludeFilter := HiddenFileFilter || "*.fragment.graphql" || "schema.graphql"
+
+/* configure src_managed as Generated sources root to be able to import generated code */
 lazy val scalaVersionFirstTwo = """[\d]*[\.][\d]*""".r.findFirstIn(Dependencies.scalaVersion).get
 Compile / managedSourceDirectories += baseDirectory.value / s"target/scala-${scalaVersionFirstTwo}/src_managed"
 

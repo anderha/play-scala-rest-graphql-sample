@@ -1,0 +1,54 @@
+mutation CreateTodo($todoToCreate: TodoToCreateType!) {
+    createTodo(todoToCreate: $todoToCreate) {
+        id
+        title
+        description
+        isDone
+        doneAt
+        createdAt
+    }
+}
+
+query GetTodo($id: Long!) {
+    todo(id: $id) {
+        id
+        title
+        description
+        isDone
+        doneAt
+        createdAt
+    }
+}
+
+mutation UpdateTodo($todoToUpdate: TodoToUpdateType!) {
+    updateTodo(todoToUpdate: $todoToUpdate) {
+        id
+        title
+        description
+        isDone
+        doneAt
+        createdAt
+    }
+}
+
+query GetAll {
+    allTodos {
+        id
+        title
+        description
+        isDone
+        doneAt
+        createdAt
+    }
+}
+
+mutation Delete($id: Long!) {
+    deleteTodo(id: $id) {
+        id
+        title
+        description
+        isDone
+        doneAt
+        createdAt
+    }
+}
