@@ -13,7 +13,7 @@ import play.api.test.Helpers._
 
 import scala.concurrent.Future
 
-class GeneratedCodeForTodoIntegrationTest extends PlaySpec with BaseOneAppPerSuite with TestApplicationFactory {
+class TodoIntegrationTestWithGeneratedCodeTest extends PlaySpec with BaseOneAppPerSuite with TestApplicationFactory {
   implicit val todoToCreateFormatter: OFormat[TodoToCreateType]                          = Json.format[TodoToCreateType]
   implicit val createTodoFormatter: OFormat[CreateTodo.CreateTodo]                       = Json.format[CreateTodo.CreateTodo]
   implicit val createTodoVariablesFormatter: OFormat[CreateTodo.Variables]               = Json.format[CreateTodo.Variables]

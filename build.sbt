@@ -149,6 +149,7 @@ graphqlSchemas += GraphQLSchema(
     .taskValue
 )
 graphqlCodegenSchema := graphqlRenderSchema.toTask("todoSchema").value
+Compile / graphqlCodegen / sourceDirectories := Seq(baseDirectory.value / "test/resources")
 Test / graphqlCodegen / sourceDirectories := Seq(baseDirectory.value / "test/resources")
 graphqlCodegen / excludeFilter := HiddenFileFilter || "*.fragment.graphql" || "schema.graphql"
 
