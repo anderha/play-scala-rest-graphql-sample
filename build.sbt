@@ -1,4 +1,5 @@
 import com.typesafe.config.ConfigFactory
+import rocks.muki.graphql.codegen.CodeGenStyles
 import sbt.{ Def, Resolver, _ }
 //settings
 
@@ -29,13 +30,13 @@ val generateTables            = taskKey[Seq[File]]("Generate slick code")
 
 // Testing
 
-coverageExcludedPackages += "<empty>;Reverse.*;router.*;.*AuthService.*;models\\\\.data\\\\..*;dbdata.Tables*;todorestgraphqlsample.common.jwt.*;todorestgraphqlsample.common.errorHandling.*;todorestgraphqlsample.common.jwt.JwtFilter;db.codegen.*;todorestgraphqlsample.common.pubSub.*;publicmetrics.influx.*"
+coverageExcludedPackages += "<empty>;graphql.codegen*;Reverse.*;router.*;.*AuthService.*;models\\\\.data\\\\..*;dbdata.Tables*;todorestgraphqlsample.common.jwt.*;todorestgraphqlsample.common.errorHandling.*;todorestgraphqlsample.common.jwt.JwtFilter;db.codegen.*;todorestgraphqlsample.common.pubSub.*;publicmetrics.influx.*"
 Test / fork := true
 
 // Commands
 
-addCommandAlias("testsWithCov", "; clean; coverage; flyway/flywayMigrate; test; coverageReport")
-addCommandAlias("tests", "; clean; flyway/flywayMigrate; test")
+addCommandAlias("testsWithCov", "; clean; coverage; flyway/flywayMigrate; graphqlCodegen; test; coverageReport")
+addCommandAlias("tests", "; clean; flyway/flywayMigrate; graphqlCodegen; test")
 
 /* TaskKeys */
 lazy val slickGen = taskKey[Seq[File]]("slickGen")
@@ -98,7 +99,7 @@ slickGen := Def.taskDyn(generateTablesTask((Global / dbConf).value)).value
 /*project definitions*/
 
 lazy val root = (project in file("."))
-  .enablePlugins(PlayScala)
+  .enablePlugins(PlayScala, GraphQLSchemaPlugin, GraphQLQueryPlugin, GraphQLCodegenPlugin)
   .dependsOn(slick)
   .settings(
     scalaVersion := Dependencies.scalaVersion,
@@ -131,6 +132,28 @@ lazy val globalResources = file("conf")
 /* Scala format */
 ThisBuild / scalafmtOnCompile := true // all projects
 
+/* sbt-graphql configure schema generation */
+graphqlSchemaSnippet := "todorestgraphqlsample.graphql.schema.SchemaDefinition.graphQLSchema"
+graphqlSchemaGen / target := baseDirectory.value
+
+/* sbt-graphql configure code generation */
+graphqlSchemas += GraphQLSchema(
+  "todoSchema",
+  "The schema to generate code from",
+  Def
+    .task(
+      GraphQLSchemaLoader
+        .fromFile(baseDirectory.value / "schema.graphql")
+        .loadSchema()
+    )
+    .taskValue
+)
+graphqlCodegenSchema := graphqlRenderSchema.toTask("todoSchema").value
+Compile / graphqlCodegen / sourceDirectories := Seq(baseDirectory.value / "test/resources")
+Test / graphqlCodegen / sourceDirectories := Seq(baseDirectory.value / "test/resources")
+graphqlCodegen / excludeFilter := HiddenFileFilter || "*.fragment.graphql" || "schema.graphql"
+
+/* configure src_managed as Generated sources root to be able to import generated code */
 lazy val scalaVersionFirstTwo = """[\d]*[\.][\d]*""".r.findFirstIn(Dependencies.scalaVersion).get
 Compile / managedSourceDirectories += baseDirectory.value / s"target/scala-${scalaVersionFirstTwo}/src_managed"
 

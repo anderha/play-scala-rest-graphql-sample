@@ -1,19 +1,20 @@
 name: Schema Validation
 
-on:
+on:                           # defines the github event which triggers this workflow
   pull_request:
     branches:
-      - master
-jobs:
-  test:
-    name: Validate Schema
-    runs-on: ubuntu-latest
+      - master                # trigger workflow for a pull request into branch master
+jobs:                         # defines the jobs of this workflow
+  validate_schema:            # id of the job
+    name: Validate Schema     # name of the job
+    runs-on: ubuntu-latest    # on which type of machine the action should be run on
     steps:
-      - name: Checkout
-        uses: actions/checkout@master
-      - uses: kamilkisiela/graphql-inspector@master
-        with:
-          schema: 'master:schema.graphql'
-          approve-label: 'expected-breaking-change'
-          # fail-on-breaking: true # default true
-          # endpoint: '' # e.g. 'https://example.com/graphql'
+      - name: Checkout repository                     # defines a step to check out the repository
+        uses: actions/checkout@master                 # source of the github action to checkout a repository
+      - name: Validate with graphql inspector         # defines a step to validate the schema
+        uses: kamilkisiela/graphql-inspector@master   # source of the github action graphql-inspector
+        with:                                         # defines settings belonging to graphql-inspector
+          schema: 'master:schema.graphql'             # path to the graphql schema to validate against
+          approve-label: 'expected-breaking-change'   # label to mark a pull request on github when you want a breaking change to succeed even if fail-on-breaking is true
+        # fail-on-breaking: true                      # decides if the validation should result with a error warning on breaking changes, default value is true
+        # endpoint: ''                                # instead of referencing a file, reference an endpoint e.g. 'https://example.com/graphql'

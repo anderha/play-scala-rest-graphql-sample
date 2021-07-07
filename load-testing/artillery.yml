@@ -1,0 +1,39 @@
+config:
+  target: "http://localhost:9000"   # target URI to run the load test against
+  phases:                           # defines the specific phases of the load test and how virtual users are generated in a specified time period
+    - duration: 5                   # the duration during which new users are arriving
+      arrivalRate: 2                # new users arriving each second
+    - duration: 5
+      arrivalRate: 2
+      maxVusers: 10                 # define a maximum amount of concurrent users
+    - duration: 5
+      arrivalRate: 2
+      rampTo: 10                    # increase the arrival rate over the duration up to the value of rampTo
+    - pause: 5                      # it is possible to pause between phases
+    - duration: 5
+      arrivalCount: 15              # creates a specified count of virtual users over the duration
+  processor: "./index.js"           # custom JS code, here it is the path to the easygraphql-load-tester configuration
+  defaults:                         # default values like HTTP Headers
+    headers:
+      "Content-Type": "application/json"
+  ensure:                           # exit with a non-zero exit code if a defined condition fails
+    p95: 250                        # make sure the 95th percentile is below the defined value in milliseconds
+    p99: 350                        # make sure the 99th percentile is below the defined value in milliseconds
+    min: 15                         # make sure the minimum is below the defined value in milliseconds
+    max: 500                        # make sure the maximum is below the defined value in milliseconds
+    median: 100                     # make sure the median is below the defined value in milliseconds
+    maxErrorRate: 5                 # make sure the total error rate is below a defined percentage
+scenarios:                          # scenarios of the virtual users created by artillery
+  - name: "GraphQL Query load test" # optional name of the scenario step
+    flow:                           # operations performed by a virtual user
+      - function: "runQueries"      # function defined in your easygraphql-load-tester configuration
+      - loop:
+          - post:                   # the used http method
+              url: "/graphql"       # endpoint of the URI to run the load test against
+              json:                 # defines the request body
+                query: "{{ $loopElement.query }}"
+                variables: "{{ $loopElement.variables }}"
+          - log: "----------------------------------"
+          - log: "Sent a request to the {{ $loopElement.operation }}: {{ $loopElement.name }}"
+          - log: "And variables {{ $loopElement.variables }}"
+        over: cases

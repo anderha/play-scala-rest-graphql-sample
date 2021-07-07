@@ -1,0 +1,359 @@
+{
+	"info": {
+		"_postman_id": "48c4a63f-b3e9-4dd3-a366-efe8829e8029",
+		"name": "GraphQL TodoApp Testchain",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "createTodo should succeed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status has to be 200\", function() {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has to contain correct values\", function() {\r",
+							"    const jsonResponse = pm.response.json();\r",
+							"    const createdTodo = jsonResponse.data.createTodo;\r",
+							"\r",
+							"    pm.expect(createdTodo.title).to.equal(\"Test\");\r",
+							"    pm.expect(createdTodo.description).to.equal(\"Testbeschreibung\");\r",
+							"    pm.expect(createdTodo.isDone).to.equal(false);\r",
+							"    pm.expect(createdTodo.doneAt).to.equal(null);\r",
+							"    pm.expect(createdTodo.createdAt).to.be.a(\"number\");\r",
+							"\r",
+							"    pm.variables.set(\"idOfTestTodo\", createdTodo.id);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response can't contain an error\", function() {\r",
+							"    const jsonResponse = pm.response.json();\r",
+							"    const errors = jsonResponse.errors;\r",
+							"\r",
+							"    pm.expect(errors).to.be.undefined;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation createTodo ($todoToCreate: TodoToCreateType!) {\n    createTodo (todoToCreate: $todoToCreate) {\n        id\n        title\n        description\n        isDone\n        doneAt\n        createdAt\n    }\n}",
+						"variables": "{\n  \"todoToCreate\": {\n    \"title\": \"Test\",\n    \"description\": \"Testbeschreibung\"\n  }\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get todo after creation should succeed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status has to be 200\", function() {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has to contain correct values\", function() {\r",
+							"    const jsonResponse = pm.response.json();\r",
+							"    const createdTodo = jsonResponse.data.todo;\r",
+							"\r",
+							"    pm.expect(createdTodo.id).to.equal(pm.variables.get(\"idOfTestTodo\"));\r",
+							"    pm.expect(createdTodo.title).to.equal(\"Test\");\r",
+							"    pm.expect(createdTodo.description).to.equal(\"Testbeschreibung\");\r",
+							"    pm.expect(createdTodo.isDone).to.equal(false);\r",
+							"    pm.expect(createdTodo.doneAt).to.equal(null);\r",
+							"    pm.expect(createdTodo.createdAt).to.be.a(\"number\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response can't contain an error\", function() {\r",
+							"    const jsonResponse = pm.response.json();\r",
+							"    const errors = jsonResponse.errors;\r",
+							"\r",
+							"    pm.expect(errors).to.be.undefined;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query todo ($id: Long!) {\n    todo (id: $id) {\n        id\n        title\n        description\n        isDone\n        doneAt\n        createdAt\n    }\n}",
+						"variables": "{\n  \"id\": {{idOfTestTodo}}\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateTodo should succeed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status has to be 200\", function() {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has to contain correct values\", function() {\r",
+							"    const jsonResponse = pm.response.json();\r",
+							"    const createdTodo = jsonResponse.data.updateTodo;\r",
+							"    console.log(jsonResponse);\r",
+							"    pm.expect(createdTodo.id).to.equal(pm.variables.get(\"idOfTestTodo\"));\r",
+							"    pm.expect(createdTodo.title).to.equal(\"Bearbeitetes Todo\");\r",
+							"    pm.expect(createdTodo.description).to.equal(\"Diese Beschreibung wurde bearbeitet\");\r",
+							"    pm.expect(createdTodo.isDone).to.equal(true);\r",
+							"    pm.expect(createdTodo.doneAt).to.be.a(\"number\");\r",
+							"    pm.expect(createdTodo.createdAt).to.be.a(\"number\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response can't contain an error\", function() {\r",
+							"    const jsonResponse = pm.response.json();\r",
+							"    const errors = jsonResponse.errors;\r",
+							"\r",
+							"    pm.expect(errors).to.be.undefined;  \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation updateTodo ($todoToUpdate: TodoToUpdateType!) {\n    updateTodo (todoToUpdate: $todoToUpdate) {\n        id\n        title\n        description\n        isDone\n        doneAt\n        createdAt\n    }\n}",
+						"variables": "{\n  \"todoToUpdate\": {\n    \"id\": {{idOfTestTodo}},\n    \"title\": \"Bearbeitetes Todo\",\n    \"description\": \"Diese Beschreibung wurde bearbeitet\",\n    \"isDone\": true\n  }\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get todo after update should succeed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status has to be 200\", function() {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has to contain correct values\", function() {\r",
+							"    const jsonResponse = pm.response.json();\r",
+							"    const createdTodo = jsonResponse.data.todo;\r",
+							"    \r",
+							"    pm.expect(createdTodo.id).to.equal(pm.variables.get(\"idOfTestTodo\"));\r",
+							"    pm.expect(createdTodo.title).to.equal(\"Bearbeitetes Todo\");\r",
+							"    pm.expect(createdTodo.description).to.equal(\"Diese Beschreibung wurde bearbeitet\");\r",
+							"    pm.expect(createdTodo.isDone).to.equal(true);\r",
+							"    pm.expect(createdTodo.doneAt).to.be.a(\"number\");\r",
+							"    pm.expect(createdTodo.createdAt).to.be.a(\"number\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response can't contain an error\", function() {\r",
+							"    const jsonResponse = pm.response.json();\r",
+							"    const errors = jsonResponse.errors;\r",
+							"\r",
+							"    pm.expect(errors).to.be.undefined;  \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query todo ($id: Long!) {\n    todo (id: $id) {\n        id\n        title\n        description\n        isDone\n        doneAt\n        createdAt\n    }\n}",
+						"variables": "{\n  \"id\": {{idOfTestTodo}}\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteTodo should succeed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status has to be 200\", function() {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has to contain correct values\", function() {\r",
+							"    const jsonResponse = pm.response.json();\r",
+							"    const createdTodo = jsonResponse.data.deleteTodo;\r",
+							"    \r",
+							"    pm.expect(createdTodo.id).to.equal(pm.variables.get(\"idOfTestTodo\"))\r",
+							"    pm.expect(createdTodo.title).to.equal(\"Bearbeitetes Todo\");\r",
+							"    pm.expect(createdTodo.description).to.equal(\"Diese Beschreibung wurde bearbeitet\");\r",
+							"    pm.expect(createdTodo.isDone).to.equal(true);\r",
+							"    pm.expect(createdTodo.doneAt).to.be.a(\"number\");\r",
+							"    pm.expect(createdTodo.createdAt).to.be.a(\"number\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response can't contain an error\", function() {\r",
+							"    const jsonResponse = pm.response.json();\r",
+							"    const errors = jsonResponse.errors;\r",
+							"\r",
+							"    pm.expect(errors).to.be.undefined;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation deleteTodo ($id: Long!) {\n    deleteTodo (id: $id) {\n        id\n        title\n        description\n        isDone\n        doneAt\n        createdAt\n    }\n}",
+						"variables": "{\n  \"id\": {{idOfTestTodo}}\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get todo after deletion should fail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status has to be 200\", function() {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has to contain correct values\", function() {\r",
+							"    const jsonResponse = pm.response.json();\r",
+							"    const errors = jsonResponse.errors;\r",
+							"    \r",
+							"    pm.expect(errors).to.be.an(\"array\");\r",
+							"    pm.expect(errors.length).to.equal(1);\r",
+							"    errors.forEach(e => {\r",
+							"        pm.expect(e.message).to.equal(\"Bad Request\");\r",
+							"        pm.expect(e.path).to.be.an(\"array\");\r",
+							"        pm.expect(e.locations).to.be.an(\"array\");\r",
+							"    })\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response data has to be null\", function() {\r",
+							"    const jsonResponse = pm.response.json();\r",
+							"    const data = jsonResponse.data;\r",
+							"\r",
+							"    pm.expect(data).to.be.null;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query todo ($id: Long!) {\n    todo (id: $id) {\n        id\n        title\n        description\n        isDone\n        doneAt\n        createdAt\n    }\n}",
+						"variables": "{\n  \"id\": {{idOfTestTodo}}\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

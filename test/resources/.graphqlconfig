@@ -1,0 +1,4 @@
+{
+  "name": "Config for Schema of Todo Sample",
+  "schemaPath": "../../schema.graphql"
+}

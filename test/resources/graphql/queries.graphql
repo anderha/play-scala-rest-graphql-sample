@@ -1,0 +1,38 @@
+mutation CreateTodo($todoToCreate: TodoToCreateType!) {
+    createTodo(todoToCreate: $todoToCreate) {
+        ...TodoFields
+    }
+}
+
+query GetTodo($id: Long!) {
+    todo(id: $id) {
+        ...TodoFields
+    }
+}
+
+mutation UpdateTodo($todoToUpdate: TodoToUpdateType!) {
+    updateTodo(todoToUpdate: $todoToUpdate) {
+        ...TodoFields
+    }
+}
+
+query GetAll {
+    allTodos {
+        ...TodoFields
+    }
+}
+
+mutation Delete($id: Long!) {
+    deleteTodo(id: $id) {
+        ...TodoFields
+    }
+}
+
+fragment TodoFields on Todo {
+    id
+    title
+    description
+    isDone
+    doneAt
+    createdAt
+}
