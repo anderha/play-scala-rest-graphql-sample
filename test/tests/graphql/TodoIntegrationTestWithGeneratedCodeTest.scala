@@ -30,23 +30,11 @@ class TodoIntegrationTestWithGeneratedCodeTest extends PlaySpec with BaseOneAppP
 
   "Generated Code: A Todo (GraphQL)" must {
     "be creatable with createTodo" in {
-      val query                        = GraphQLQuery(
-        "CreateTodo",
-        CreateTodo.document.source.get,
-        CreateTodo.Variables(
-          TodoToCreateType(
-            title = titleOfGraphQLTodo,
-            description = descriptionOfGraphQLTodo
-          )
-        )
-      )
-      println(query.toJson)
-      val futureResult: Future[Result] = route(
-        app,
-        FakeRequest(POST, "/graphql").withJsonBody(
-          query.toJson
-        )
-      ).get
+
+      val todoToCreate = TodoToCreateType(titleOfGraphQLTodo, descriptionOfGraphQLTodo)
+      val query        = GraphQLQuery("CreateTodo", CreateTodo.document.source.get, CreateTodo.Variables(todoToCreate))
+
+      val futureResult: Future[Result] = route(app, FakeRequest(POST, "/graphql").withJsonBody(query.toJson)).get
 
       // Check Http Status
       status(futureResult) mustBe 200
