@@ -1,9 +1,5 @@
 # TodoApp - Rest & GraphQL Sample
 
-Inspired by
-
-- [bootstrap-play2](https://github.com/innFactory/bootstrap-play2)
-
 ## Architecture
 
 ![](./doc/architecture.png)
@@ -17,8 +13,10 @@ docker compose up -d
 cd ..
 # migrate database
 sbt flyway/flywayMigrate
-# generate code
+# generate code for the database
 sbt slickGen
+# generate code for tests
+sbt graphqlCodegen
 # start the webservice
 sbt run
 ```
@@ -68,3 +66,7 @@ npm i
 # run load test
 npm run load-test
 ```
+
+## Based on
+
+- [bootstrap-play2](https://github.com/innFactory/bootstrap-play2)
