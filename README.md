@@ -1,5 +1,12 @@
 # TodoApp - Rest & GraphQL Sample
 
+## Prerequisites
+
+You will need a GitHub token as system environment variable to download dependencies from GitHub package registry.
+1. Go to 'Settings' -> 'Developer Settings' -> 'Personal access tokens'
+2. Generate a new token with the scope read:packages
+3. Set a environment variable on your system with the name GITHUB_TOKEN and the generated token as value
+
 ## Architecture
 
 ![](./doc/architecture.png)
