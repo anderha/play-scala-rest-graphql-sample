@@ -22,7 +22,6 @@ type Todo {
   description: String!
   isDone: Boolean!
   doneAt: Long
-  createdAt: Long!
 }
 
 input TodoToCreateType {
